@@ -1,0 +1,22 @@
+.btn-margin {
+  margin: 2px;
+  width: 100px;
+}
+
+.numbers {
+  color: #fff;
+  background-color: rgb(141, 154, 173);
+}
+
+.operators {
+  color: #fff;
+  background-color: rgb(73, 112, 151);
+}
+
+.numbers:hover {
+  background-color: #356;
+}
+
+.operators:hover {
+  background-color: rgb(58, 93, 128);
+}

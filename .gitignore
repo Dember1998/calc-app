@@ -1,0 +1,21 @@
+#ignorar carpetas
+e2e/
+node_modules/
+environments/
+testing/
+
+#ignorar demas archivos
+browserslist
+favicon.ico
+karma.conf.js
+main.ts
+polyfills.ts
+test.ts
+angular.json
+package.json
+tsconfig.json
+tslint.json
+.editorconfig
+tsconfig.app.json
+tsconfig.spec.json
+.vscode/

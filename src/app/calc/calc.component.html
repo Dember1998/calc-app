@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="card border-success w-50">
+    <h2 class="card-header border-success bg-transparent ">={{ resultado }}</h2>
+    <div class="card-body">
+      <input type="text" class="form-control card-text" placeholder="0" [value]="calcText" id="pantalla" autofocus appTextCalc>
+    </div>
+
+    <div class="card-footer bg-transparent border-success">
+        <app-keypad (tecla)="getTecla($event)"></app-keypad>
+    </div>
+
+  </div>
+  <p class="h1">pos cursor="{{ posicionCursor }}"</p>
+  <p class="h1" *ngIf="textCursor">text cursor start="{{ textCursor.start }}" end="{{ textCursor.end }}"</p>

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
 import { Observable, Subject } from 'rxjs';
-import { Teclas, TexCursor } from './calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isSigno } from './funciones';
 
 @Injectable({
   providedIn: 'root'

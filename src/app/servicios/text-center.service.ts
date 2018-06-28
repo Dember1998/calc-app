@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TexCursor } from './calc-class';
-import { isSigno } from './funciones';
+import { TexCursor } from '../calc-class';
+import { isSigno } from '../funciones';
 
 @Injectable({
   providedIn: 'root'

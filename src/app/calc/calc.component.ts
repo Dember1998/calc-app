@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CalcService } from '../calc.service';
 import { Filas, TexCursor } from '../calc-class';
-import { FormatearCadenasService } from '../formatear-cadenas.service';
-import { TextCenterService } from '../text-center.service';
 import { isSigno } from '../funciones';
-import { ResolverOperacionService } from '../resolver-operacion.service';
+import { CalcService } from '../servicios/calc.service';
+import { FormatearCadenasService } from '../servicios/formatear-cadenas.service';
+import { TextCenterService } from '../servicios/text-center.service';
+import { ResolverOperacionService } from '../servicios/resolver-operacion.service';
 
 @Component({
   selector: 'app-calc',

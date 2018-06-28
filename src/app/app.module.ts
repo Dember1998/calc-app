@@ -6,9 +6,6 @@ import { CalcComponent } from './calc/calc.component';
 import { KeypadComponent } from './keypad/keypad.component';
 import { CursorDirective } from './cursor.directive';
 import { TextCalcDirective } from './text-calc.directive';
-import { CadenasService } from './cadenas.service';
-import { FormatearCadenasService } from './formatear-cadenas.service';
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -21,9 +18,6 @@ import { FormatearCadenasService } from './formatear-cadenas.service';
     CursorDirective,
     TextCalcDirective,
   ],
-  providers: [
-    CadenasService,
-    FormatearCadenasService],
 
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TexCursor } from './calc-class';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CadenasService {
 
   constructor() { }

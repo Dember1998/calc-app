@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isSigno } from './funciones';
+import { isSigno } from '../funciones';
 
 @Injectable({
   providedIn: 'root'

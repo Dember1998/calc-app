@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { CalcService } from '../calc.service';
 import { Filas, Teclas } from '../calc-class';
+import { CalcService } from '../servicios/calc.service';
 
 
 @Component({

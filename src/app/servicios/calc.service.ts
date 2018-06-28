@@ -10,6 +10,7 @@ export class CalcService {
 
   constructor() { }
   private posicionCursor$ = new Subject<number>();
+  private calcText$ = new Subject<string>();
 
   // obtienen y envian las posiciones del cursor
   // provenientes de directivas
@@ -21,5 +22,15 @@ export class CalcService {
     this.posicionCursor$.next(posicionCursor);
     // console.log(`cursorService =${posicionCursor} de ${llamada}`);
 
+  }
+
+  /** obtiene el texto de la pantalla de la calculadora */
+  getCalcText$(): Observable<string> {
+    return this.calcText$.asObservable();
+  }
+
+  /** Evia el texto de la pantalla de la calculadora */
+  setCalcText$(calcText: string) {
+    this.calcText$.next(calcText);
   }
 }

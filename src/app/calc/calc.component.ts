@@ -4,6 +4,7 @@ import { Filas, TexCursor } from '../calc-class';
 import { FormatearCadenasService } from '../formatear-cadenas.service';
 import { TextCenterService } from '../text-center.service';
 import { isSigno } from '../funciones';
+import { ResolverOperacionService } from '../resolver-operacion.service';
 
 @Component({
   selector: 'app-calc',
@@ -23,7 +24,8 @@ export class CalcComponent implements OnInit {
   constructor(
     public calcService: CalcService,
     public formatoService: FormatearCadenasService,
-    private textCenterService: TextCenterService
+    private textCenterService: TextCenterService,
+    private resolverOperacion: ResolverOperacionService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class CalcComponent implements OnInit {
 
   igual() {
     this.calcText = this.formatoService.parentisis(this.calcText);
-    this.resultado = this.calcService.resolverOperacion(this.calcText);
+    this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 
   invertirNumbero() {
@@ -89,7 +91,7 @@ export class CalcComponent implements OnInit {
         }
       }
     this.calcText = this.formatoService.zero(this.calcText);
-    this.resultado = this.calcService.resolverOperacion(this.calcText);
+    this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
   /**
    * crea una cadena con las teclas pulsadas

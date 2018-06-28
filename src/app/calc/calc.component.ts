@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CalcService } from '../calc.service';
 import { Filas, TexCursor } from '../calc-class';
 import { FormatearCadenasService } from '../formatear-cadenas.service';
+import { TextCenterService } from '../text-center.service';
 
 @Component({
   selector: 'app-calc',
@@ -18,14 +19,18 @@ export class CalcComponent implements OnInit {
   coma: boolean;
   signo: boolean;
 
-  constructor(public calcService: CalcService, public formatoService: FormatearCadenasService) { }
+  constructor(
+    public calcService: CalcService,
+    public formatoService: FormatearCadenasService,
+    private textCenterService: TextCenterService
+  ) { }
 
   ngOnInit() {
     this.calcService.getPosicionCursor$()
       .subscribe(posicion => {
         this.posicionCursor = posicion;
         this.DivideText();
-        this.cantidadActual = this.calcService.TextCenterCursor(this.textCursor);
+        this.cantidadActual = this.textCenterService.TextCenterCursor(this.textCursor);
         // console.log(`cantidad actual = ${this.cantidadActual}`);
         this.filtrarComa();
         this.filtrarSigno();

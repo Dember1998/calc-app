@@ -7,7 +7,8 @@ import { isSigno } from '../funciones';
 })
 export class TextCenterService {
 
-  constructor() { }
+  constructor(
+  ) { }
 
   // 12+345+6889 = +345+
   TextCenterCursor(textCursor: TexCursor): string {

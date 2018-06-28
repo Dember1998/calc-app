@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+// tslint:disable-next-line:import-blacklist
 import { Observable, Subject } from 'rxjs';
 import { Teclas, TexCursor } from './calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
+import { isSigno } from './funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +46,7 @@ export class CalcService {
     const SQRT = x => Math.sqrt(x);
 
     // se busca si el ultimo caracter no termina con un signo
-    if (operacion.endsWith('(') || this.isSigno(operacion[operacion.length - 1])) {
+    if (operacion.endsWith('(') || isSigno(operacion[operacion.length - 1])) {
       operacion = operacion.substr(0, operacion.length - 1);
     }
 
@@ -54,19 +56,11 @@ export class CalcService {
 
     let resultado: number;
     try {
-      resultado = !this.isSigno(operacion[operacion.length - 1]) ?
+      resultado = !isSigno(operacion[operacion.length - 1]) ?
         // tslint:disable-next-line:no-eval
         eval(operacion) : null;
     } catch (Error) { alert(Error); }
 
     return resultado;
   }
-
-  isSigno(searchString = ''): boolean {
-    return searchString.includes('*') ||
-      searchString.includes('/') ||
-      searchString.includes('+') ||
-      searchString.includes('-') ? true : false;
-  }
-
 }

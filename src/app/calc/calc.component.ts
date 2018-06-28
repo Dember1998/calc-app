@@ -3,6 +3,7 @@ import { CalcService } from '../calc.service';
 import { Filas, TexCursor } from '../calc-class';
 import { FormatearCadenasService } from '../formatear-cadenas.service';
 import { TextCenterService } from '../text-center.service';
+import { isSigno } from '../funciones';
 
 @Component({
   selector: 'app-calc',
@@ -37,13 +38,6 @@ export class CalcComponent implements OnInit {
       });
   }
 
-  isSigno(searchString = ''): boolean {
-    return searchString.includes('*') ||
-      searchString.includes('/') ||
-      searchString.includes('+') ||
-      searchString.includes('-') ? true : false;
-  }
-
   igual() {
     this.calcText = this.formatoService.parentisis(this.calcText);
     this.resultado = this.calcService.resolverOperacion(this.calcText);
@@ -53,7 +47,7 @@ export class CalcComponent implements OnInit {
     // no llamar a invertir cuando la cadena sea vacia o
     // o cuando la cadena actual es un signo
     if (this.cantidadActual !== '' &&
-      !(this.cantidadActual.length === 1 && this.isSigno(this.cantidadActual)) // 1+|
+      !(this.cantidadActual.length === 1 && isSigno(this.cantidadActual)) // 1+|
     ) {
       const posicion = this.invertir();
     }
@@ -77,7 +71,7 @@ export class CalcComponent implements OnInit {
     tecla = tecla === '+/-' ? 'invertir' : tecla;
 
     if (tecla === '.' && this.coma) { } else
-      if (this.isSigno(tecla) && this.signo) { } else {
+      if (isSigno(tecla) && this.signo) { } else {
         switch (tecla) {
           case '=': this.igual(); break;
           case 'invertir': this.invertirNumbero(); break;
@@ -137,8 +131,8 @@ export class CalcComponent implements OnInit {
       star = this.textCursor.start,
       end = this.textCursor.end;
 
-    this.signo = this.isSigno(star[star.length - 1]) ||
-      this.isSigno(end[0]) ?
+    this.signo = isSigno(star[star.length - 1]) ||
+      isSigno(end[0]) ?
       true : false;
 
     // console.log('signo = ' + this.signo);
@@ -164,20 +158,20 @@ export class CalcComponent implements OnInit {
     */
     // -----------------------------------------------
     let copiaCadena;
-    if (!this.isSigno(this.textCursor.end)) {
+    if (!isSigno(this.textCursor.end)) {
       if (cadenaIzquierda.startsWith('-') && cadenaIzquierda.length === 1) {
         cadenaIzquierda = '';
       } else
-        if (this.isSigno(cadenaIzquierda[0]) && cadenaIzquierda.length > 1) {
+        if (isSigno(cadenaIzquierda[0]) && cadenaIzquierda.length > 1) {
           copiaCadena = cadenaIzquierda.substr(1);
         }
     }
     if (copiaCadena) {
-      if (!this.isSigno(copiaCadena)) {
+      if (!isSigno(copiaCadena)) {
         cadenaIzquierda = '';
       }
     } else { // se considera que no se elimino ningun signo al inicio
-      if (!this.isSigno(cadenaIzquierda)) {
+      if (!isSigno(cadenaIzquierda)) {
         cadenaIzquierda = '';
       }
     }
@@ -187,18 +181,18 @@ export class CalcComponent implements OnInit {
     // devolver la cadena, si no se encuentra se devolvera una cadena vacia
     // porque se considerara que la cadena que se esta evaluando pertenece a la
     // cantidad actual
-    if (this.isSigno(cadenaIzquierda) && cadenaIzquierda) {
+    if (isSigno(cadenaIzquierda) && cadenaIzquierda) {
       for (let i = cadenaIzquierda.length - 1; i >= 0; i--) {
         const iterator = cadenaIzquierda[i];
         // 1+23+- = 1+23+
         // cuando nos encontramos con el caso de dos signos seguidos por ejemplo "1+23+-" debemos eliminar
         // el ultimo signo ya que ese signo petenece a la cantidad actual
-        if (this.isSigno(cadenaIzquierda[cadenaIzquierda.length - 2]) && cadenaIzquierda.endsWith('-')) {
+        if (isSigno(cadenaIzquierda[cadenaIzquierda.length - 2]) && cadenaIzquierda.endsWith('-')) {
           cadenaIzquierda = cadenaIzquierda.substr(0, cadenaIzquierda.length - 1);
           break;
         } else
           // la cadena se devolvera asta que nos encontremos con la aparcion de un signo
-          if (this.isSigno(iterator)) {
+          if (isSigno(iterator)) {
             break;
           } else { // 1+23+23 = 1+23+2 ....
             // en cualquier caso si no se encuentra un signo seguiremos eliminando el
@@ -224,8 +218,8 @@ export class CalcComponent implements OnInit {
     // cuando se el cursor se encuentra en medio de dos signos;
     // eliminaremos el primer signo, porque se considerara que esta pertenece
     // a la cantidad actual
-    if (this.isSigno(this.textCursor.start[this.textCursor.start.length - 1])
-      && this.isSigno(this.textCursor.end[0])) {
+    if (isSigno(this.textCursor.start[this.textCursor.start.length - 1])
+      && isSigno(this.textCursor.end[0])) {
       cadenaDerecha = cadenaDerecha.substr(this.cantidadActual.length - 1);
     }
 
@@ -234,14 +228,14 @@ export class CalcComponent implements OnInit {
     // porque se considera que esta pertenece a la cantidad actual
     // al eliminar esto signo, nos concentraremos en buscar la siguiente aparicion de un signo
     // y asi devolver la cantidadDerecha
-    if (this.textCursor.start === '' && this.isSigno(this.textCursor.end[0])) {
+    if (this.textCursor.start === '' && isSigno(this.textCursor.end[0])) {
       cadenaDerecha = cadenaDerecha.substr(1);
     }
 
     // 12+2I5+23 = +23
-    if (this.isSigno(cadenaDerecha)) {
+    if (isSigno(cadenaDerecha)) {
       for (const iterator of cadenaDerecha) {
-        if (this.isSigno(iterator)) {
+        if (isSigno(iterator)) {
           break;
         } else {
           cadenaDerecha = cadenaDerecha.substr(1);
@@ -271,7 +265,7 @@ export class CalcComponent implements OnInit {
     };
 
     // +34I5+ = +34I5
-    if (this.isSigno(this.cantidadActual[this.cantidadActual.length - 1])) {
+    if (isSigno(this.cantidadActual[this.cantidadActual.length - 1])) {
       deleteString(0, this.cantidadActual.length - 1);
     }
 
@@ -281,7 +275,7 @@ export class CalcComponent implements OnInit {
     }
 
     // 123I
-    if (!this.isSigno(this.cantidadActual)) {
+    if (!isSigno(this.cantidadActual)) {
       newString = this.cantidadActual;
     }
 

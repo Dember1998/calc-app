@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TexCursor } from './calc-class';
+import { isSigno } from './funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class TextCenterService {
 
     // 12+2|53+23 = +2
     const recortarIzquierda = (): void => {
-      if (this.isSigno(cadenaIzquierda)) {
+      if (isSigno(cadenaIzquierda)) {
         const posicionSigno = this.posicionUltimoSigno(cadenaIzquierda);
         textCenterLef = cadenaIzquierda.substr(posicionSigno);
       } else { textCenterLef = cadenaIzquierda; }
@@ -27,14 +28,14 @@ export class TextCenterService {
 
     // 12+2|53+23 = 53+
     const recortarDerecha = (): void => {
-      if (this.isSigno(cadenaDerecha)) {
+      if (isSigno(cadenaDerecha)) {
         const posicionSigno = this.posicionPrimerSigno(cadenaDerecha);
         textCenterRigh = cadenaDerecha.substr(0, posicionSigno);
       } else { textCenterRigh = cadenaDerecha; }
     };
 
     // 1+|-23+5  = -23+
-    if (this.isSigno(cadenaIzquierda[cadenaIzquierda.length - 1]) && this.isSigno(cadenaDerecha[0])) {
+    if (isSigno(cadenaIzquierda[cadenaIzquierda.length - 1]) && isSigno(cadenaDerecha[0])) {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
       recortarDerecha();
@@ -42,7 +43,7 @@ export class TextCenterService {
     }
 
     // -1+2 = -1+
-    if (cadenaIzquierda === '' && this.isSigno(cadenaDerecha[0])) {
+    if (cadenaIzquierda === '' && isSigno(cadenaDerecha[0])) {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
       recortarDerecha();
@@ -56,13 +57,6 @@ export class TextCenterService {
     // console.log(`left =${textCenterLef} righ =${textCenterRigh}`);
 
     return textCenterCursor;
-  }
-
-  isSigno(searchString = ''): boolean {
-    return searchString.includes('*') ||
-      searchString.includes('/') ||
-      searchString.includes('+') ||
-      searchString.includes('-') ? true : false;
   }
 
   posicionUltimoSigno(text: string) {

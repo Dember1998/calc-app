@@ -3,6 +3,7 @@ import { isSigno } from '../funciones';
 import { CalcService } from './calc.service';
 import { TextCenterService } from './text-center.service';
 import { TexCursor } from '../calc-class';
+import { TextCursorService } from './text-cursor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class InvertirCantidadService {
   constructor(
     public calcService: CalcService,
     private textCenterService: TextCenterService,
+    private textCursorService: TextCursorService
   ) {
 
     this.calcService.getCalcText$()
@@ -25,16 +27,11 @@ export class InvertirCantidadService {
     this.calcService.getPosicionCursor$()
       .subscribe(posicion => {
         this.posicionCursor = posicion;
-        this.DivideText();
         this.cantidadActual = this.textCenterService.TextCenterCursor(this.textCursor);
       });
-  }
 
-  DivideText() {
-    this.textCursor = {
-      start: this.calcText.substr(0, this.posicionCursor),
-      end: this.calcText.substr(this.posicionCursor)
-    };
+      this.textCursorService.getTextCursor$()
+      .subscribe(textCursor => this.textCursor = textCursor);
   }
   /**
    * Devueve la cadena que esta a la izquierda del la cantidad Actual

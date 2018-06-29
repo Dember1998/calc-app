@@ -21,16 +21,22 @@ export class InvertirCantidadService {
     private textCursorService: TextCursorService
   ) {
 
-    this.calcService.getCalcText$()
+    this.calcService
+      .getCalcText$()
       .subscribe(text => this.calcText = text);
 
-    this.calcService.getPosicionCursor$()
+    this.calcService
+      .getPosicionCursor$()
       .subscribe(posicion => {
         this.posicionCursor = posicion;
-        this.cantidadActual = this.textCenterService.TextCenterCursor(this.textCursor);
+
+        this.textCenterService
+          .getTextCenter$()
+          .subscribe(text => this.cantidadActual = text);
       });
 
-      this.textCursorService.getTextCursor$()
+    this.textCursorService
+      .getTextCursor$()
       .subscribe(textCursor => this.textCursor = textCursor);
   }
   /**

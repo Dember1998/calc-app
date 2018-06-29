@@ -6,6 +6,7 @@ import { FormatearCadenasService } from '../servicios/formatear-cadenas.service'
 import { TextCenterService } from '../servicios/text-center.service';
 import { ResolverOperacionService } from '../servicios/resolver-operacion.service';
 import { InvertirCantidadService } from '../servicios/invertir-cantidad.service';
+import { TextCursorService } from '../servicios/text-cursor.service';
 
 @Component({
   selector: 'app-calc',
@@ -16,8 +17,8 @@ export class CalcComponent implements OnInit {
   posicionCursor = 0;
   resultado: number;
   calcText = '';
-  textCursor: TexCursor;
-  cantidadActual: string;
+  textCursor: TexCursor = { start: '', end: '' };
+  cantidadActual = '';
 
   coma: boolean;
   signo: boolean;
@@ -27,15 +28,23 @@ export class CalcComponent implements OnInit {
     public formatoService: FormatearCadenasService,
     private textCenterService: TextCenterService,
     private resolverOperacion: ResolverOperacionService,
-    private invertirService: InvertirCantidadService
+    private invertirService: InvertirCantidadService,
+    private textCursorService: TextCursorService
   ) { }
 
   ngOnInit() {
-    this.calcService.getPosicionCursor$()
+    this.calcService
+      .getPosicionCursor$()
       .subscribe(posicion => {
         this.posicionCursor = posicion;
-        this.DivideText();
-        this.cantidadActual = this.textCenterService.TextCenterCursor(this.textCursor);
+
+        this.textCursorService
+          .getTextCursor$()
+          .subscribe(text => this.textCursor = text);
+
+        this.textCenterService
+          .getTextCenter$()
+          .subscribe(text => this.cantidadActual = text);
         // console.log(`cantidad actual = ${this.cantidadActual}`);
         this.filtrarComa();
         this.filtrarSigno();
@@ -116,16 +125,6 @@ export class CalcComponent implements OnInit {
   /** envia el texto actual a los servicios */
   setCalcTextToService() {
     this.calcService.setCalcText$(this.calcText);
-  }
-  /**
-   * divide la cadena actual en dos cudenas partiendo de
-   * la posicion del cursor
-   */
-  DivideText(): void {
-    this.textCursor = {
-      start: this.calcText.substr(0, this.posicionCursor),
-      end: this.calcText.substr(this.posicionCursor)
-    };
   }
 
   // habilita o deshabilita la escritura de la coma

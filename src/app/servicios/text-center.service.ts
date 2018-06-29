@@ -17,6 +17,7 @@ export class TextCenterService {
       .getTextCursor$()
       .subscribe(text => {
         this.textCenter = this.TextCenterCursor(text);
+        this.setTextCenterCursor();
       }
       );
   }

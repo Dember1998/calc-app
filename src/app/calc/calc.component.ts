@@ -14,11 +14,16 @@ import { TextCursorService } from '../servicios/text-cursor.service';
   styleUrls: ['./calc.component.css']
 })
 export class CalcComponent implements OnInit {
+  /**Posicion actual del cursor en la operacion */
   posicionCursor = 0;
+  /**contendra el resultado de cada operacion */
   resultado: number;
+  /**Contine el la operacion actual */
   calcText = '';
+  /**contiene el texto que esta a la izquierda y derecha del cursor */
   textCursor: TexCursor = { start: '', end: '' };
-  cantidadActual = '';
+  /**la cantidad que esta bajo el cursor */
+  private cantidadActual = '';
 
   coma: boolean;
   signo: boolean;
@@ -51,12 +56,12 @@ export class CalcComponent implements OnInit {
       });
   }
 
-  igual() {
+  private igual() {
     this.calcText = this.formatoService.parentisis(this.calcText);
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 
-  invertirNumbero() {
+  private invertirNumbero() {
     // no llamar a invertir cuando la cadena sea vacia o
     // o cuando la cadena actual es un signo
     if (this.cantidadActual !== '' &&
@@ -66,7 +71,7 @@ export class CalcComponent implements OnInit {
     }
   }
 
-  delete() {
+  private delete() {
     let textInicio = this.textCursor.start;
 
     if (this.calcText.length === this.posicionCursor) {
@@ -109,7 +114,7 @@ export class CalcComponent implements OnInit {
    * crea una cadena con las teclas pulsadas
    * @param tecla tecla pulsada
    */
-  addTexts(tecla: string): void {
+  private addTexts(tecla: string): void {
     // seguir agregando texto cuando el cursor esta en la ultima posicion
     if (this.calcText.length === this.posicionCursor) {
       this.calcText += tecla;
@@ -123,18 +128,18 @@ export class CalcComponent implements OnInit {
   }
 
   /** envia el texto actual a los servicios */
-  setCalcTextToService() {
+  private setCalcTextToService() {
     this.calcService.setCalcText$(this.calcText);
   }
 
-  // habilita o deshabilita la escritura de la coma
-  filtrarComa() {
+  /** habilita o deshabilita la escritura de la coma*/
+  private filtrarComa() {
     this.coma = this.cantidadActual
       .includes('.') ? true : false;
   }
 
-  // habilita o deshabilita la escritura de los signos
-  filtrarSigno() {
+  /** habilita o deshabilita la escritura de los signos*/
+  private filtrarSigno() {
     const
       star = this.textCursor.start,
       end = this.textCursor.end;

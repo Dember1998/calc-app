@@ -7,6 +7,7 @@ import { TextCenterService } from '../servicios/text-center.service';
 import { ResolverOperacionService } from '../servicios/resolver-operacion.service';
 import { InvertirCantidadService } from '../servicios/invertir-cantidad.service';
 import { TextCursorService } from '../servicios/text-cursor.service';
+import { AddTextService } from '../servicios/add-text.service';
 
 @Component({
   selector: 'app-calc',
@@ -34,7 +35,8 @@ export class CalcComponent implements OnInit {
     private textCenterService: TextCenterService,
     private resolverOperacion: ResolverOperacionService,
     private invertirService: InvertirCantidadService,
-    private textCursorService: TextCursorService
+    private textCursorService: TextCursorService,
+    private addTextService: AddTextService
   ) { }
 
   ngOnInit() {
@@ -42,18 +44,22 @@ export class CalcComponent implements OnInit {
       .getPosicionCursor$()
       .subscribe(posicion => {
         this.posicionCursor = posicion;
-
-        this.textCursorService
-          .getTextCursor$()
-          .subscribe(text => this.textCursor = text);
-
-        this.textCenterService
-          .getTextCenter$()
-          .subscribe(text => this.cantidadActual = text);
         // console.log(`cantidad actual = ${this.cantidadActual}`);
         this.filtrarComa();
         this.filtrarSigno();
       });
+
+    this.textCenterService
+      .getTextCenter$()
+      .subscribe(text => this.cantidadActual = text);
+
+    this.textCursorService
+      .getTextCursor$()
+      .subscribe(text => this.textCursor = text);
+
+    this.addTextService
+      .getText$()
+      .subscribe(text => this.calcText = text);
   }
 
   private igual() {
@@ -71,18 +77,6 @@ export class CalcComponent implements OnInit {
     }
   }
 
-  private delete() {
-    let textInicio = this.textCursor.start;
-
-    if (this.calcText.length === this.posicionCursor) {
-      this.calcText = this.calcText
-        .substr(0, this.calcText.length - 1);
-    } else if (this.calcText.length > this.posicionCursor) {
-      textInicio = textInicio
-        .substr(0, textInicio.length - 1);
-      this.calcText = textInicio + this.textCursor.end;
-    }
-  }
 
   getTecla(tecla: string) {
 
@@ -95,12 +89,12 @@ export class CalcComponent implements OnInit {
     } else if (tecla === '+/-') {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
-      this.delete();
+      this.addTextService.delete();
     } else if (this.isTrigonometria(tecla)) {
-      this.addTexts(tecla + '(');
+      this.addTextService.setText(tecla + '(');
       this.calcService.setPosicionCursor(this.posicionCursor + 3);
     } else {
-      this.addTexts(tecla);
+      this.addTextService.setText(tecla);
     }
 
     this.resolveOperation();
@@ -128,23 +122,6 @@ export class CalcComponent implements OnInit {
       return true;
     } else {
       return false;
-    }
-  }
-
-  /**
-   * crea una cadena con las teclas pulsadas
-   * @param tecla tecla pulsada
-   */
-  private addTexts(tecla: string): void {
-    // seguir agregando texto cuando el cursor esta en la ultima posicion
-    if (this.calcText.length === this.posicionCursor) {
-      this.calcText += tecla;
-    } else {
-      // agregar  texto cuando el cursor esta dentro
-      // de la cadena ejemplo: 12I4
-      if (this.calcText.length > this.posicionCursor) {
-        this.calcText = this.textCursor.start + tecla + this.textCursor.end;
-      }
     }
   }
 

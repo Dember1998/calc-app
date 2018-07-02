@@ -86,30 +86,51 @@ export class CalcComponent implements OnInit {
 
   getTecla(tecla: string) {
 
-    tecla = tecla === '+/-' ? 'invertir' : tecla;
+    if (this.isBadSyntax(tecla)) {
+      return;
+    }
 
-    if (tecla === '.' && this.coma) { } else
-      if (isSigno(tecla) && this.signo) { } else {
-        switch (tecla) {
-          case '=': this.igual(); break;
-          case 'invertir': this.invertirNumbero(); break;
-          case 'AC': this.delete(); break;
+    if (tecla === '=') {
+      this.igual();
+    } else if (tecla === '+/-') {
+      this.invertirNumbero();
+    } else if (tecla === 'AC') {
+      this.delete();
+    } else if (this.isTrigonometria(tecla)) {
+      this.addTexts(tecla + '(');
+      this.calcService.setPosicionCursor(this.posicionCursor + 3);
+    } else {
+      this.addTexts(tecla);
+    }
 
-          case 'SEN':
-          case 'COS':
-          case 'TAN':
-          case 'SQRT':
-            this.addTexts(`${tecla}(`);
-            this.calcService.setPosicionCursor(this.posicionCursor + 3);
-            break;
-
-          default: this.addTexts(tecla); break;
-        }
-      }
-    this.calcText = this.formatoService.zero(this.calcText);
-    this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
+    this.resolveOperation();
     this.setCalcTextToService();
   }
+
+  resolveOperation() {
+    this.calcText = this.formatoService.zero(this.calcText);
+    this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
+  }
+
+  private isBadSyntax(tecla: string): boolean {
+    if (tecla === '.' && this.coma) {
+      return true;
+    } else if (tecla !== '+/-' && isSigno(tecla) && this.signo) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private isTrigonometria(tecla: string): boolean {
+    if (tecla === 'SEN' || tecla === 'COS' ||
+      tecla === 'TAN' || tecla === 'SQRT') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
    * crea una cadena con las teclas pulsadas
    * @param tecla tecla pulsada

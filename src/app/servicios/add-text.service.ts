@@ -33,7 +33,12 @@ export class AddTextService {
   }
 
   public setText(tecla: string) {
-    this.addTexts(tecla);
+    if (this.isTrigonometria(tecla)) {
+      this.addTexts(tecla + '(');
+      this.calcService.setPosicionCursor(this.posicionCursor + 3);
+    } else {
+      this.addTexts(tecla);
+    }
     this.calcText$.next(this.CalcText);
   }
 
@@ -70,6 +75,15 @@ export class AddTextService {
       this.calcText = textInicio + this.textCursor.end;
     }
     this.calcText$.next(this.CalcText);
+  }
+
+  private isTrigonometria(tecla: string): boolean {
+    if (tecla === 'SEN' || tecla === 'COS' ||
+      tecla === 'TAN' || tecla === 'SQRT') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

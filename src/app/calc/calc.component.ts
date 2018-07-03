@@ -15,8 +15,6 @@ import { AddTextService } from '../servicios/add-text.service';
   styleUrls: ['./calc.component.css']
 })
 export class CalcComponent implements OnInit {
-  /**Posicion actual del cursor en la operacion */
-  posicionCursor = 0;
   /**contendra el resultado de cada operacion */
   resultado: number;
   /**Contine el la operacion actual */
@@ -42,9 +40,7 @@ export class CalcComponent implements OnInit {
   ngOnInit() {
     this.calcService
       .getPosicionCursor$()
-      .subscribe(posicion => {
-        this.posicionCursor = posicion;
-        // console.log(`cantidad actual = ${this.cantidadActual}`);
+      .subscribe(() => {
         this.filtrarComa();
         this.filtrarSigno();
       });
@@ -90,9 +86,6 @@ export class CalcComponent implements OnInit {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
       this.addTextService.delete();
-    } else if (this.isTrigonometria(tecla)) {
-      this.addTextService.setText(tecla + '(');
-      this.calcService.setPosicionCursor(this.posicionCursor + 3);
     } else {
       this.addTextService.setText(tecla);
     }
@@ -114,15 +107,6 @@ export class CalcComponent implements OnInit {
     }
 
     return false;
-  }
-
-  private isTrigonometria(tecla: string): boolean {
-    if (tecla === 'SEN' || tecla === 'COS' ||
-      tecla === 'TAN' || tecla === 'SQRT') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   /** envia el texto actual a los servicios */

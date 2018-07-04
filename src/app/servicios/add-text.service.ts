@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
+import { FormatearCadenasService } from './formatear-cadenas.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class AddTextService {
 
   constructor(
     private calcService: CalcService,
-    private textCursorService: TextCursorService
+    private textCursorService: TextCursorService,
+    private formatoService: FormatearCadenasService
   ) {
     this.calcService
       .getPosicionCursor$()
@@ -64,9 +66,10 @@ export class AddTextService {
         this.calcText = this.textCursor.start + tecla + this.textCursor.end;
       }
     }
+    this.calcText = this.formatoService.zero(this.calcText);
   }
 
-/**elimina  un caracter de la cadena principal*/
+  /**elimina  un caracter de la cadena principal*/
   public delete() {
     let textInicio = this.textCursor.start;
 

@@ -15,6 +15,7 @@ import { AddTextService } from '../servicios/add-text.service';
   styleUrls: ['./calc.component.css']
 })
 export class CalcComponent implements OnInit {
+  posicionCursor = 0;
   /**contendra el resultado de cada operacion */
   resultado: number;
   /**Contine el la operacion actual */
@@ -40,7 +41,8 @@ export class CalcComponent implements OnInit {
   ngOnInit() {
     this.calcService
       .getPosicionCursor$()
-      .subscribe(() => {
+      .subscribe((posicion) => {
+        this.posicionCursor = posicion;
         this.filtrarComa();
         this.filtrarSigno();
       });
@@ -95,7 +97,6 @@ export class CalcComponent implements OnInit {
   }
 
   resolveOperation() {
-    this.calcText = this.formatoService.zero(this.calcText);
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 

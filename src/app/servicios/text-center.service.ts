@@ -90,7 +90,13 @@ export class TextCenterService {
     const textCenterCursor = left + righ;
     // console.log(`left =${left} righ =${righ}`);
 
-    return { center: textCenterCursor };
+    console.log('left=', left, righ);
+
+    return {
+      center: textCenterCursor,
+      left,
+      righ
+    };
   }
 
   private posicionUltimoSigno(text: string) {

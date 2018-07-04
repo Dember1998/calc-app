@@ -49,7 +49,7 @@ export class CalcComponent implements OnInit {
 
     this.textCenterService
       .getTextCenter$()
-      .subscribe(text => this.cantidadActual = text);
+      .subscribe(text => this.cantidadActual = text.center);
 
     this.textCursorService
       .getTextCursor$()

@@ -5,6 +5,16 @@ import { TextCursorService } from './text-cursor.service';
 // tslint:disable-next-line:import-blacklist
 import { Subject, Observable } from 'rxjs';
 
+/** cantidad bajo el cursor*/
+export interface ITexCenter {
+  /** cantidad bajo el cursor, con su signos */
+  center?: string;
+  /**la cadena a la izquierda de "center"*/
+  left?: string;
+  // **cadena a la derecha de "center" */
+  righ?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,40 +32,40 @@ export class TextCenterService {
       );
   }
 
-  private textCenterCursor$ = new Subject<string>();
-  private textCenter = '';
+  private textCenterCursor$ = new Subject<ITexCenter>();
+  private textCenter: ITexCenter = { center: '' };
 
   private setTextCenterCursor() {
     this.textCenterCursor$.next(this.textCenter);
   }
 
-  getTextCenter$(): Observable<string> {
+  getTextCenter$(): Observable<ITexCenter> {
     return this.textCenterCursor$.asObservable();
   }
 
   // 12+345+6889 = +345+
- private TextCenterCursor(textCursor: TexCursor): string {
+  private TextCenterCursor(textCursor: TexCursor): ITexCenter {
     const cadenaIzquierda = textCursor.start;
     let cadenaDerecha = textCursor.end;
 
     let
-      textCenterLef = '',
-      textCenterRigh = '';
+      left = '',
+      righ = '';
 
     // 12+2|53+23 = +2
     const recortarIzquierda = (): void => {
       if (isSigno(cadenaIzquierda)) {
         const posicionSigno = this.posicionUltimoSigno(cadenaIzquierda);
-        textCenterLef = cadenaIzquierda.substr(posicionSigno);
-      } else { textCenterLef = cadenaIzquierda; }
+        left = cadenaIzquierda.substr(posicionSigno);
+      } else { left = cadenaIzquierda; }
     };
 
     // 12+2|53+23 = 53+
     const recortarDerecha = (): void => {
       if (isSigno(cadenaDerecha)) {
         const posicionSigno = this.posicionPrimerSigno(cadenaDerecha);
-        textCenterRigh = cadenaDerecha.substr(0, posicionSigno);
-      } else { textCenterRigh = cadenaDerecha; }
+        righ = cadenaDerecha.substr(0, posicionSigno);
+      } else { righ = cadenaDerecha; }
     };
 
     // 1+|-23+5  = -23+
@@ -63,7 +73,7 @@ export class TextCenterService {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
       recortarDerecha();
-      return primerSigno + textCenterRigh;
+      return { center: primerSigno + righ };
     }
 
     // -1+2 = -1+
@@ -71,16 +81,16 @@ export class TextCenterService {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
       recortarDerecha();
-      return primerSigno + textCenterRigh;
+      return { center: primerSigno + righ };
     }
 
     recortarIzquierda();
     recortarDerecha();
 
-    const textCenterCursor = textCenterLef + textCenterRigh;
-    // console.log(`left =${textCenterLef} righ =${textCenterRigh}`);
+    const textCenterCursor = left + righ;
+    // console.log(`left =${left} righ =${righ}`);
 
-    return textCenterCursor;
+    return { center: textCenterCursor };
   }
 
   private posicionUltimoSigno(text: string) {

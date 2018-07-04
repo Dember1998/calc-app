@@ -9,6 +9,7 @@ export class ResolverOperacionService {
 
   constructor(public formatear: FormatearCadenasService) { }
 
+  /**busca todas las apariciones de % y las reemplaza con /100 */
   porcentaje(operacion: string) {
     let newString = '';
     for (const iterator of operacion) {

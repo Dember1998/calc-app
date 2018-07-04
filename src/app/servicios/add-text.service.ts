@@ -32,6 +32,9 @@ export class AddTextService {
     return this.calcText;
   }
 
+  /**se reciben la mayoria de las teclas pulsadas y se crea
+   * una cadena a partir de esas pulsaciones
+   */
   public setText(tecla: string) {
     if (this.isTrigonometria(tecla)) {
       this.addTexts(tecla + '(');
@@ -63,6 +66,7 @@ export class AddTextService {
     }
   }
 
+/**elimina  un caracter de la cadena principal*/
   public delete() {
     let textInicio = this.textCursor.start;
 

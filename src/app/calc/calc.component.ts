@@ -99,13 +99,16 @@ export class CalcComponent implements OnInit {
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 
+  /**Debuelve true si hay un erro de sintanxis
+   * como cuando se intenta esciribir dos comas seguida "12.."
+   * o dos signos siguidos "+12++"
+   */
   private isBadSyntax(tecla: string): boolean {
     if (tecla === '.' && this.coma) {
       return true;
     } else if (tecla !== '+/-' && isSigno(tecla) && this.signo) {
       return true;
     }
-
     return false;
   }
 

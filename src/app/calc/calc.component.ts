@@ -66,15 +66,8 @@ export class CalcComponent implements OnInit {
   }
 
   private invertirNumbero() {
-    // no llamar a invertir cuando la cadena sea vacia o
-    // o cuando la cadena actual es un signo
-    if (this.cantidadActual !== '' &&
-      !(this.cantidadActual.length === 1 && isSigno(this.cantidadActual)) // 1+|
-    ) {
       this.calcText = this.invertirService.invertir();
-    }
   }
-
 
   getTecla(tecla: string) {
 

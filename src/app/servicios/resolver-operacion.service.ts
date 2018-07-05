@@ -21,7 +21,8 @@ export class ResolverOperacionService {
     return newString;
   }
 
-  resolverOperacion(operacion: string): number {
+  resolverOperacion(operacion = ''): number {
+
     const COS = x => Math.cos(x);
     const SEN = x => Math.sin(x);
     const TAN = x => Math.tan(x);

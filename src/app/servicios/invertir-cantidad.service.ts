@@ -42,11 +42,12 @@ export class InvertirCantidadService {
 
   // convierte positivo a negativo y biseversa la cantidad actual
   invertir(): string {
-    // no llamar a invertir cuando la cadena sea vacia o
-    // o cuando la cadena actual es un signo
-    if (this.cantidadActual !== '' &&
-      !(this.cantidadActual.center.length === 1 && isSigno(this.cantidadActual.center)) // 1+|
-    ) { return; }
+    // no llamar a invertir  cuando la cadena actual es un signo
+    if (this.cantidadActual.center.length === 1 &&
+      isSigno(this.cantidadActual.center)) {
+      return this.cantidadActual.center;
+    }
+
     return this._Invertir();
   }
 

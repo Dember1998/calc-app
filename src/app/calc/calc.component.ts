@@ -66,7 +66,7 @@ export class CalcComponent implements OnInit {
   }
 
   private invertirNumbero() {
-      this.calcText = this.invertirService.invertir();
+    this.calcText = this.invertirService.invertir();
   }
 
   getTecla(tecla: string) {
@@ -102,7 +102,7 @@ export class CalcComponent implements OnInit {
       return true;
     } else if (tecla !== '+/-' && isSigno(tecla) && this.signo) {
       return true;
-    }
+    } else if (tecla === '+/-' && !this.calcText) { return true; }
     return false;
   }
 

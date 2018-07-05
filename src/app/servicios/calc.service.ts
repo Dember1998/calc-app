@@ -30,7 +30,7 @@ export class CalcService {
   }
 
   /** Evia el texto de la pantalla de la calculadora */
-  setCalcText$(calcText: string) {
+  setCalcText$(calcText = '') {
     this.calcText$.next(calcText);
   }
 }

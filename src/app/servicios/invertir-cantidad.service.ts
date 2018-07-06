@@ -45,8 +45,8 @@ export class InvertirCantidadService {
   invertir(): string {
     // no llamar a invertir  cuando la cadena actual es un signo
     if (this.cantidadActual.center.length === 1 &&
-      isSigno(this.cantidadActual.center)) {
-      return this.cantidadActual.center;
+      isSigno(this.cantidadActual.center.charAt(this.cantidadActual.center.length - 1))) {
+      return this.textCursor.start + this.textCursor.end;
     }
 
     return this._Invertir();

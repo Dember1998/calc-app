@@ -62,7 +62,8 @@ export class InvertirCantidadService {
     let cantidad: string = deleteSigno.derecha;
     cantidad = (Number(cantidad) * -1) + deleteSigno.signoDerecha;
 
-    const newStrActual = center.left + '|' + center.righ;
+    let newStrActual = center.left + '|' + center.righ;
+    newStrActual = this.eliminarSignoIzquieda(newStrActual).izquierda;
     let newStrCompleto = this.textCursor.start + '|' + this.textCursor.end;
 
     newStrCompleto = newStrCompleto
@@ -94,8 +95,10 @@ export class InvertirCantidadService {
     let signoIzquierda = '';
 
     if (isSigno(izquierda[0])) {
-      signoIzquierda = izquierda[0];
-      izquierda = izquierda.substring(1);
+      if (izquierda.charAt(0) === '+') {
+        signoIzquierda = izquierda[0];
+        izquierda = izquierda.substring(1);
+      }
     }
 
     return {

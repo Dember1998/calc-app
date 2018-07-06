@@ -54,7 +54,7 @@ export class InvertirCantidadService {
   private _Invertir(): string {
     // devuelve  la cantidad actual con el signo a la derecha eliminado
     // ejemplo 123+ = 123
-    const deleteSigno = this.eliminarSigno(this.cantidadActual.center);
+    const deleteSigno = this.eliminarSignoDerecha(this.cantidadActual.center);
     // cantidad actual con sus signos a la izquierda y derecha
     const center = this.cantidadActual;
 
@@ -62,14 +62,7 @@ export class InvertirCantidadService {
     let cantidad: string = deleteSigno.derecha;
     cantidad = (Number(cantidad) * -1) + deleteSigno.signoDerecha;
 
-    /* para agregar la cantida que se multiplico *-1 a la cadena principal,
-      se crean nuevas copias de la cadena principal y la cadena actual,
-       pero agregandole el signo del cursor '|', esto es para que al usar
-       el metodo "replace" se puedan hacer cooncidir las cadenas y remplazarla
-       por la cantidad que se multiplico por -1
-    */
-    let newStrActual = center.left + '|' + center.righ;
-    newStrActual = this.eliminarSigno(newStrActual).izquierda;
+    const newStrActual = center.left + '|' + center.righ;
     let newStrCompleto = this.textCursor.start + '|' + this.textCursor.end;
 
     newStrCompleto = newStrCompleto
@@ -81,16 +74,24 @@ export class InvertirCantidadService {
   }
 
   /**Elimina el signo de una cantidad actual y la devuelve*/
-  private eliminarSigno(text = '') {
+  private eliminarSignoDerecha(text = '') {
     let derecha = text;
-    let izquierda = text;
     let signoDerecha = '';
-    let signoIzquierda = '';
 
     if (isSigno(derecha[text.length - 1])) {
       signoDerecha = derecha[text.length - 1];
       derecha = derecha.substring(0, text.length - 1);
     }
+
+    return {
+      derecha,
+      signoDerecha
+    };
+  }
+
+  private eliminarSignoIzquieda(text = '') {
+    let izquierda = text;
+    let signoIzquierda = '';
 
     if (isSigno(izquierda[0])) {
       signoIzquierda = izquierda[0];
@@ -98,13 +99,10 @@ export class InvertirCantidadService {
     }
 
     return {
-      derecha,
-      signoDerecha,
       izquierda,
       signoIzquierda
     };
   }
-
 
 }
 

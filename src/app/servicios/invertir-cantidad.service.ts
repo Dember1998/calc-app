@@ -68,7 +68,8 @@ export class InvertirCantidadService {
        el metodo "replace" se puedan hacer cooncidir las cadenas y remplazarla
        por la cantidad que se multiplico por -1
     */
-    const newStrActual = center.left + '|' + center.righ;
+    let newStrActual = center.left + '|' + center.righ;
+    newStrActual = this.eliminarSigno(newStrActual).izquierda;
     let newStrCompleto = this.textCursor.start + '|' + this.textCursor.end;
 
     newStrCompleto = newStrCompleto
@@ -82,16 +83,25 @@ export class InvertirCantidadService {
   /**Elimina el signo de una cantidad actual y la devuelve*/
   private eliminarSigno(text = '') {
     let derecha = text;
+    let izquierda = text;
     let signoDerecha = '';
+    let signoIzquierda = '';
 
     if (isSigno(derecha[text.length - 1])) {
       signoDerecha = derecha[text.length - 1];
       derecha = derecha.substring(0, text.length - 1);
     }
 
+    if (isSigno(izquierda[0])) {
+      signoIzquierda = izquierda[0];
+      izquierda = izquierda.substring(1);
+    }
+
     return {
       derecha,
-      signoDerecha
+      signoDerecha,
+      izquierda,
+      signoIzquierda
     };
   }
 

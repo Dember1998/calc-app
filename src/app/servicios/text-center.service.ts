@@ -27,17 +27,17 @@ export class TextCenterService {
     this.textCursorService
       .getTextCursor$()
       .subscribe(text => {
-        this.textCenter = this.TextCenterCursor(text);
+        this.textCursor = text;
         this.setTextCenterCursor();
       }
       );
   }
 
+  private textCursor: TexCursor;
   private textCenterCursor$ = new Subject<ITexCenter>();
-  private textCenter: ITexCenter = { center: '' };
 
   private setTextCenterCursor() {
-    this.textCenterCursor$.next(this.textCenter);
+    this.textCenterCursor$.next(this.TextCenterCursor());
   }
 
   getTextCenter$(): Observable<ITexCenter> {
@@ -45,9 +45,9 @@ export class TextCenterService {
   }
 
   // 12+345+6889 = +345+
-  private TextCenterCursor(textCursor: TexCursor): ITexCenter {
-    const cadenaIzquierda = textCursor.start;
-    let cadenaDerecha = textCursor.end;
+  private TextCenterCursor(): ITexCenter {
+    const cadenaIzquierda = this.textCursor.start;
+    let cadenaDerecha = this.textCursor.end;
 
     let
       left = '',

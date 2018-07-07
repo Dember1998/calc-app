@@ -60,10 +60,18 @@ export class InvertirCantidadService {
     return isLast;
   }
 
+  eliminarSignoDerecha(txt: string) {
+    return new EliminarSignoDerecha(txt);
+  }
+
+  eliminarSingoIzquieda(txt: string) {
+   return new EliminarSignoIzquieda(txt);
+  }
+
   private _Invertir(): string {
     // devuelve  la cantidad actual con el signo a la derecha eliminado
     // ejemplo 123+ = 123
-    const deleteSigno = new EliminarSignoDerecha(this.cantidadActual.center);
+    const deleteSigno = this.eliminarSignoDerecha(this.cantidadActual.center);
     // cantidad actual con sus signos a la izquierda y derecha
     const center = this.cantidadActual;
 
@@ -72,7 +80,7 @@ export class InvertirCantidadService {
     cantidad = (Number(cantidad) * -1) + deleteSigno.signo;
 
     let newStrActual = center.left + '|' + center.righ;
-    newStrActual = new EliminarSignoIzquieda(newStrActual).cantidad;
+    newStrActual = this.eliminarSingoIzquieda(newStrActual).cantidad;
     let newStrCompleto = this.textCursor.start + '|' + this.textCursor.end;
 
     newStrCompleto = newStrCompleto

@@ -4,6 +4,7 @@ import { isSigno } from '../funciones';
 import { TextCursorService } from './text-cursor.service';
 // tslint:disable-next-line:import-blacklist
 import { Subject, Observable } from 'rxjs';
+import { PosicionSigno } from './posicionSigno';
 
 /** cantidad bajo el cursor*/
 export interface ITexCenter {
@@ -100,26 +101,10 @@ export class TextCenterService {
   }
 
   private posicionUltimoSigno(text: string) {
-    let posicion = -1;
-    for (let i = text.length - 1; i >= 0; i--) {
-      const iterator = text[i];
-      if (iterator === '*' ||
-        iterator === '/' ||
-        iterator === '+' ||
-        iterator === '-') { posicion = i; break; }
-    }
-    return posicion;
+   return new PosicionSigno(text).Ultimo;
   }
 
   private posicionPrimerSigno(text: string) {
-    let posicion = -1;
-    for (let i = 0; i < text.length; i++) {
-      const iterator = text[i];
-      if (iterator === '*' ||
-        iterator === '/' ||
-        iterator === '+' ||
-        iterator === '-') { posicion = i + 1; break; }
-    }
-    return posicion;
+    return new PosicionSigno(text).Primer;
   }
 }

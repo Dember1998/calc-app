@@ -40,6 +40,24 @@ export class TextCenterService {
     this.textCenterCursor$.next(this.TextCenterCursor());
   }
 
+  // 12+2|53+23 = +2
+  recortarIzquierda (): string {
+    const cadenaIzquierda = this.textCursor.start;
+    if (isSigno(cadenaIzquierda)) {
+      const posicionSigno = this.posicionUltimoSigno(cadenaIzquierda);
+      return cadenaIzquierda.substr(posicionSigno);
+    } else { return cadenaIzquierda; }
+  }
+
+  // 12+2|53+23 = 53+
+  recortarDerecha (): string {
+    const cadenaDerecha = this.textCursor.end;
+    if (isSigno(cadenaDerecha)) {
+      const posicionSigno = this.posicionPrimerSigno(cadenaDerecha) + 1;
+      return cadenaDerecha.substr(0, posicionSigno);
+    } else { return cadenaDerecha; }
+  }
+
   getTextCenter$(): Observable<ITexCenter> {
     return this.textCenterCursor$.asObservable();
   }
@@ -53,27 +71,12 @@ export class TextCenterService {
       left = '',
       righ = '';
 
-    // 12+2|53+23 = +2
-    const recortarIzquierda = (): void => {
-      if (isSigno(cadenaIzquierda)) {
-        const posicionSigno = this.posicionUltimoSigno(cadenaIzquierda);
-        left = cadenaIzquierda.substr(posicionSigno);
-      } else { left = cadenaIzquierda; }
-    };
-
-    // 12+2|53+23 = 53+
-    const recortarDerecha = (): void => {
-      if (isSigno(cadenaDerecha)) {
-        const posicionSigno = this.posicionPrimerSigno(cadenaDerecha) + 1;
-        righ = cadenaDerecha.substr(0, posicionSigno);
-      } else { righ = cadenaDerecha; }
-    };
 
     // 1+|-23+5  = -23+
     if (isSigno(cadenaIzquierda[cadenaIzquierda.length - 1]) && isSigno(cadenaDerecha[0])) {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
-      recortarDerecha();
+      righ = this.recortarDerecha();
       return { center: primerSigno + righ };
     }
 
@@ -81,12 +84,12 @@ export class TextCenterService {
     if (cadenaIzquierda === '' && isSigno(cadenaDerecha[0])) {
       const primerSigno = cadenaDerecha[0];
       cadenaDerecha = cadenaDerecha.substr(1);
-      recortarDerecha();
+      righ = this.recortarDerecha();
       return { center: primerSigno + righ };
     }
 
-    recortarIzquierda();
-    recortarDerecha();
+    left = this.recortarIzquierda();
+    righ = this.recortarDerecha();
 
     const textCenterCursor = left + righ;
     // console.log(`left =${left} righ =${righ}`);
@@ -101,7 +104,7 @@ export class TextCenterService {
   }
 
   private posicionUltimoSigno(text: string) {
-   return new PosicionSigno(text).Ultimo;
+    return new PosicionSigno(text).Ultimo;
   }
 
   private posicionPrimerSigno(text: string) {

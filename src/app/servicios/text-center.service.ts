@@ -90,7 +90,7 @@ export class TextCenterService {
     const textCenterCursor = left + righ;
     // console.log(`left =${left} righ =${righ}`);
 
-    console.log('left=', left, righ);
+    console.log('center=', textCenterCursor);
 
     return {
       center: textCenterCursor,

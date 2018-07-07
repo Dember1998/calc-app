@@ -41,7 +41,9 @@ export class InvertirCantidadService {
       return this.textCursor.start + this.textCursor.end;
     }
 
-    return this._Invertir();
+    const cantidad: string = this.multiplicarPorMenosUno(this.cantidadActual.center);
+    const newStr = this.ReemplazarEnCalcTxt(cantidad);
+    return newStr;
   }
 
   /**verifica que el cursor se encuentra a la par de un signo */
@@ -84,12 +86,6 @@ export class InvertirCantidadService {
       );
 
     return newStrCompleto;
-  }
-
-  private _Invertir(): string {
-    const cantidad: string = this.multiplicarPorMenosUno(this.cantidadActual.center);
-    const newStr = this.ReemplazarEnCalcTxt(cantidad);
-    return newStr;
   }
 }
 

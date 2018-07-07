@@ -14,7 +14,6 @@ export class InvertirCantidadService {
   calcText = '';
   textCursor: TexCursor;
   cantidadActual: ITexCenter;
-  posicionCursor = 0;
 
   constructor(
     public calcService: CalcService,
@@ -26,15 +25,9 @@ export class InvertirCantidadService {
       .getCalcText$()
       .subscribe(text => this.calcText = text);
 
-    this.calcService
-      .getPosicionCursor$()
-      .subscribe(posicion => {
-        this.posicionCursor = posicion;
-
-        this.textCenterService
-          .getTextCenter$()
-          .subscribe(text => this.cantidadActual = text);
-      });
+      this.textCenterService
+      .getTextCenter$()
+      .subscribe(text => this.cantidadActual = text);
 
     this.textCursorService
       .getTextCursor$()

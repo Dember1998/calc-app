@@ -44,12 +44,20 @@ export class InvertirCantidadService {
   // convierte positivo a negativo y biseversa la cantidad actual
   invertir(): string {
     // no llamar a invertir  cuando la cadena actual es un signo
-    if (this.cantidadActual.center.length === 1 &&
-      isSigno(this.cantidadActual.center.charAt(this.cantidadActual.center.length - 1))) {
+    if (this.isLastSigno()) {
       return this.textCursor.start + this.textCursor.end;
     }
 
     return this._Invertir();
+  }
+
+  /**verifica que el cursor se encuentra a la par de un signo */
+  isLastSigno(): boolean {
+    const length: number = this.cantidadActual.center.length;
+    const lastChartxt: string = this.cantidadActual.center.charAt(length - 1);
+    const isLast: boolean = length === 1 && isSigno(lastChartxt);
+
+    return isLast;
   }
 
   private _Invertir(): string {

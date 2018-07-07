@@ -64,7 +64,7 @@ export class TextCenterService {
     // 12+2|53+23 = 53+
     const recortarDerecha = (): void => {
       if (isSigno(cadenaDerecha)) {
-        const posicionSigno = this.posicionPrimerSigno(cadenaDerecha);
+        const posicionSigno = this.posicionPrimerSigno(cadenaDerecha) + 1;
         righ = cadenaDerecha.substr(0, posicionSigno);
       } else { righ = cadenaDerecha; }
     };

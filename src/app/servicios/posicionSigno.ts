@@ -23,7 +23,7 @@ export class PosicionSigno {
       posicion = Array
           .from(this.text)
           .reverse()
-          .findIndex(val => isSigno(this.text));
+          .findIndex(val => isSigno(val));
 
       return (this.text.length - 1) - posicion;
   }
@@ -33,7 +33,7 @@ export class PosicionSigno {
 
       const posicion = Array
           .from(this.text)
-          .findIndex(val => isSigno(val)) + 1;
+          .findIndex(val => isSigno(val));
 
       return posicion;
   }

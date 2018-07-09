@@ -46,11 +46,10 @@ export class InvertirCantidadService {
     return newStr;
   }
 
-  /**verifica que el cursor se encuentra a la par de un signo */
+  /**caso 12- */
   isLastSigno(): boolean {
     const length: number = this.cantidadActual.center.length;
-    const lastChartxt: string = this.cantidadActual.center.charAt(length - 1);
-    const isLast: boolean = length === 1 && isSigno(lastChartxt);
+    const isLast = length === 1 && isSigno(this.cantidadActual.center);
 
     return isLast;
   }

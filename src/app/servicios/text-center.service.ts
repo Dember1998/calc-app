@@ -65,25 +65,27 @@ export class TextCenterService {
   // 12+345+6889 = +345+
   private TextCenterCursor(): ITexCenter {
     const txtLeft = this.textCursor.start;
-    let txtRight = this.textCursor.end;
+    const txtRight = this.textCursor.end;
 
     let left = '', righ = '';
 
-
     // 1+|-23+5  = -23+
-    if (isSigno(txtLeft[txtLeft.length - 1]) && isSigno(txtRight[0])) {
-      const Signo = txtRight[0];
-      txtRight = txtRight.substr(1);
+    if ( isSigno( txtLeft[ txtLeft.length - 1 ] ) && isSigno( txtRight[ 0 ] ) ) {
+      this.textCursor.end = txtRight.substr( 1 );
       righ = this.recortarDerecha();
-      return { center: Signo + righ };
+      left = this.recortarIzquierda();
+      return {
+        center:
+          txtRight[0] + righ,
+        righ, left
+      };
     }
 
     // -1+2 = -1+
     if (txtRight === '' && isSigno(txtRight[0])) {
-      const Signo = txtRight[0];
-      txtRight = txtRight.substr(1);
+      this.textCursor.end = txtRight.substr(1);
       righ = this.recortarDerecha();
-      return { center: Signo + righ };
+      return { center: txtRight[ 0 ] + righ };
     }
 
     left = this.recortarIzquierda();

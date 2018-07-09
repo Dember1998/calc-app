@@ -64,40 +64,37 @@ export class TextCenterService {
 
   // 12+345+6889 = +345+
   private TextCenterCursor(): ITexCenter {
-    const cadenaIzquierda = this.textCursor.start;
-    let cadenaDerecha = this.textCursor.end;
+    const txtLeft = this.textCursor.start;
+    let txtRight = this.textCursor.end;
 
-    let
-      left = '',
-      righ = '';
+    let left = '', righ = '';
 
 
     // 1+|-23+5  = -23+
-    if (isSigno(cadenaIzquierda[cadenaIzquierda.length - 1]) && isSigno(cadenaDerecha[0])) {
-      const primerSigno = cadenaDerecha[0];
-      cadenaDerecha = cadenaDerecha.substr(1);
+    if (isSigno(txtLeft[txtLeft.length - 1]) && isSigno(txtRight[0])) {
+      const Signo = txtRight[0];
+      txtRight = txtRight.substr(1);
       righ = this.recortarDerecha();
-      return { center: primerSigno + righ };
+      return { center: Signo + righ };
     }
 
     // -1+2 = -1+
-    if (cadenaIzquierda === '' && isSigno(cadenaDerecha[0])) {
-      const primerSigno = cadenaDerecha[0];
-      cadenaDerecha = cadenaDerecha.substr(1);
+    if (txtRight === '' && isSigno(txtRight[0])) {
+      const Signo = txtRight[0];
+      txtRight = txtRight.substr(1);
       righ = this.recortarDerecha();
-      return { center: primerSigno + righ };
+      return { center: Signo + righ };
     }
 
     left = this.recortarIzquierda();
     righ = this.recortarDerecha();
 
-    const textCenterCursor = left + righ;
     // console.log(`left =${left} righ =${righ}`);
 
-    console.log('center=', textCenterCursor);
+    console.log('center=', left + righ);
 
     return {
-      center: textCenterCursor,
+      center: left + righ,
       left,
       righ
     };

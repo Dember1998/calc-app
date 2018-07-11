@@ -62,6 +62,10 @@ export class TextCenterService {
     return this.textCenterCursor$.asObservable();
   }
 
+  log(txt) {
+    console.log('center=', txt);
+  }
+
   // 12+345+6889 = +345+
   private TextCenterCursor(): ITexCenter {
     const txtLeft = this.textCursor.start;
@@ -74,18 +78,27 @@ export class TextCenterService {
       this.textCursor.end = txtRight.substr( 1 );
       righ = this.recortarDerecha();
       left = this.recortarIzquierda();
+
+      this.log(left + righ);
       return {
         center:
-          txtRight[0] + righ,
+          txtRight[ 0 ] + righ,
         righ, left
       };
     }
 
-    // -1+2 = -1+
-    if (txtRight === '' && isSigno(txtRight[0])) {
-      this.textCursor.end = txtRight.substr(1);
+    // handle:  |-1+2 = -1+
+    if (txtLeft === '' && isSigno( txtRight[ 0 ] )) {
+      this.textCursor.end = txtRight.substr( 1 );
       righ = this.recortarDerecha();
-      return { center: txtRight[ 0 ] + righ };
+      left = this.recortarIzquierda();
+
+      this.log(left + righ);
+      return {
+        center:
+          txtRight[ 0 ] + righ,
+        righ, left
+      };
     }
 
     left = this.recortarIzquierda();
@@ -93,7 +106,7 @@ export class TextCenterService {
 
     // console.log(`left =${left} righ =${righ}`);
 
-    console.log('center=', left + righ);
+   this.log(left + righ);
 
     return {
       center: left + righ,

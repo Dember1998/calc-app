@@ -66,18 +66,24 @@ export class TextCenterService {
     console.log('center=', txt);
   }
 
+  trimText(): ITexCenter {
+    return {
+      left: this.recortarIzquierda(),
+      righ: this.recortarDerecha()
+    };
+  }
+
   // 12+345+6889 = +345+
   private TextCenterCursor(): ITexCenter {
     const txtLeft = this.textCursor.start;
     const txtRight = this.textCursor.end;
 
-    let left = '', righ = '';
 
     // 1+|-23+5  = -23+
     if ( isSigno( txtLeft[ txtLeft.length - 1 ] ) && isSigno( txtRight[ 0 ] ) ) {
-      this.textCursor.end = txtRight.substr( 1 );
-      righ = this.recortarDerecha();
-      left = this.recortarIzquierda();
+      this.textCursor.end = txtRight.substr(1);
+      // tslint:disable-next-line:no-shadowed-variable
+      const { left, righ } = this.trimText();
 
       this.log(left + righ);
       return {
@@ -90,8 +96,8 @@ export class TextCenterService {
     // handle:  |-1+2 = -1+
     if (txtLeft === '' && isSigno( txtRight[ 0 ] )) {
       this.textCursor.end = txtRight.substr( 1 );
-      righ = this.recortarDerecha();
-      left = this.recortarIzquierda();
+      // tslint:disable-next-line:no-shadowed-variable
+      const { left, righ } = this.trimText();
 
       this.log(left + righ);
       return {
@@ -101,10 +107,7 @@ export class TextCenterService {
       };
     }
 
-    left = this.recortarIzquierda();
-    righ = this.recortarDerecha();
-
-    // console.log(`left =${left} righ =${righ}`);
+    const { left, righ } = this.trimText();
 
    this.log(left + righ);
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { isSigno } from '../funciones';
 
 @Injectable({ providedIn: 'root' })
 export class FormatearCadenasService {
@@ -47,7 +48,6 @@ export class FormatearCadenasService {
 
     let newStrin = '',
       lastInterator = '';
-    const mysing = '*/+-';
     let iterator = '';
 
     for (let i = 0; i < _string.length; i++) {
@@ -61,7 +61,7 @@ export class FormatearCadenasService {
         if (lastInterator === '%' && this.isNumber(iterator)) {
           newStrin += '*' + iterator;
         } else
-          if (mysing.indexOf(lastInterator) >= 0 && iterator === '.') {
+          if (isSigno(lastInterator) && iterator === '.') {
             newStrin += '0.';
           } else
             if (lastInterator === '.' && this.isNumber(iterator)) {

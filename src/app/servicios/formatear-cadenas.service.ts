@@ -59,18 +59,15 @@ export class FormatearCadenasService {
 
       if (last === undefined && current === '.') {
         add('0.');
-      } else
-        if (last === '%' && this.isNumber(current)) {
-          add('*' + current);
-        } else
-          if (isSigno(last) && current === '.') {
-            add('0.');
-          } else
-            if (last === '.' && this.isNumber(current)) {
-              add('0' + current);
-            } else {
-              add(current);
-            }
+      } else if (last === '%' && this.isNumber(current)) {
+        add('*' + current);
+      } else if (isSigno(last) && current === '.') {
+        add('0.');
+      } else if (last === '.' && this.isNumber(current)) {
+        add('0' + current);
+      } else {
+        add(current);
+      }
     }
     return newStrin;
   }

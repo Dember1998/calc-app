@@ -13,9 +13,9 @@ export class FormatearCadenasService {
       startParentesis = 0,
       endParentesis = 0;
 
-    for (const iterator of _string) {
-      if (iterator === '(') { startParentesis++; }
-      if (iterator === ')') { endParentesis++; }
+    for (const current of _string) {
+      if (current === '(') { startParentesis++; }
+      if (current === ')') { endParentesis++; }
     }
 
     if (startParentesis === endParentesis) {
@@ -46,28 +46,30 @@ export class FormatearCadenasService {
 
   zero(_string: string) {
 
-    let newStrin = '',
-      lastInterator = '';
-    let iterator = '';
+    let newStrin = '';
+
+    const add = (txt: string) => {
+      newStrin += txt;
+    };
 
     for (let i = 0; i < _string.length; i++) {
 
-      iterator = _string[i];
-      lastInterator = _string[i - 1];
+      const current = _string[i];
+      const last = _string[i - 1];
 
-      if (lastInterator === undefined && iterator === '.') {
-        newStrin += '0.';
+      if (last === undefined && current === '.') {
+        add('0.');
       } else
-        if (lastInterator === '%' && this.isNumber(iterator)) {
-          newStrin += '*' + iterator;
+        if (last === '%' && this.isNumber(current)) {
+          add('*' + current);
         } else
-          if (isSigno(lastInterator) && iterator === '.') {
-            newStrin += '0.';
+          if (isSigno(last) && current === '.') {
+            add('0.');
           } else
-            if (lastInterator === '.' && this.isNumber(iterator)) {
-              newStrin += '0' + iterator;
+            if (last === '.' && this.isNumber(current)) {
+              add('0' + current);
             } else {
-              newStrin += iterator;
+              add(current);
             }
     }
     return newStrin;

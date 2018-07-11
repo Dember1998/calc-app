@@ -22,7 +22,9 @@ export class AddTextService {
 
     this.textCursorService
       .getTextCursor$()
-      .subscribe(text => this.textCursor = text);
+      .subscribe(text => {
+        this.textCursor = text;
+      });
   }
 
   private calcText = '';
@@ -37,7 +39,7 @@ export class AddTextService {
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
-  public setText(tecla: string) {
+  public setChar(tecla: string) {
     if (this.isTrigonometria(tecla)) {
       this.addTexts(tecla + '(');
       this.calcService.setPosicionCursor(this.posicionCursor + 3);
@@ -45,6 +47,10 @@ export class AddTextService {
       this.addTexts(tecla);
     }
     this.calcText$.next(this.CalcText);
+  }
+
+  public setText(text: string) {
+    this.calcText = text;
   }
 
   public getText$() {

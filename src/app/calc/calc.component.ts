@@ -67,6 +67,7 @@ export class CalcComponent implements OnInit {
 
   private invertirNumbero() {
     this.calcText = this.invertirService.invertir();
+    this.addTextService.setText(this.calcText);
   }
 
   getTecla(tecla: string) {
@@ -82,7 +83,7 @@ export class CalcComponent implements OnInit {
     } else if (tecla === 'AC') {
       this.addTextService.delete();
     } else {
-      this.addTextService.setText(tecla);
+      this.addTextService.setChar(tecla);
     }
 
     this.resolveOperation();

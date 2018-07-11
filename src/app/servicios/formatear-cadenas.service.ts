@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class FormatearCadenasService {
 
   constructor() { }
@@ -38,13 +38,17 @@ export class FormatearCadenasService {
         }
   }
 
+  isNumber(txt = ''): boolean {
+    const is: boolean = Number.isNaN(+txt);
+    return is;
+  }
+
   zero(_string: string) {
 
     let newStrin = '',
       lastInterator = '';
     const mysing = '*/+-';
     let iterator = '';
-    const numbers = '0123456789';
 
     for (let i = 0; i < _string.length; i++) {
 
@@ -54,14 +58,14 @@ export class FormatearCadenasService {
       if (lastInterator === undefined && iterator === '.') {
         newStrin += '0.';
       } else
-        if (lastInterator === '%' && numbers.indexOf(iterator) >= 0) {
+        if (lastInterator === '%' && this.isNumber(iterator)) {
           newStrin += '*' + iterator;
         } else
           if (mysing.indexOf(lastInterator) >= 0 && iterator === '.') {
             newStrin += '0.';
           } else
-            if (lastInterator === '.' && mysing.indexOf(iterator) >= 0) {
-              newStrin += 0 + iterator;
+            if (lastInterator === '.' && this.isNumber(iterator)) {
+              newStrin += '0' + iterator;
             } else {
               newStrin += iterator;
             }

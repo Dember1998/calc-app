@@ -100,7 +100,7 @@ export class TextCenterService {
       // tslint:disable-next-line:no-shadowed-variable
       const { left, righ } = this.trimText();
 
-      this.log(left + righ);
+      this.log(txtRight[0] + righ);
       return this.returnObjet(left, righ, txtRight[0] + righ);
     }
 
@@ -110,7 +110,7 @@ export class TextCenterService {
       // tslint:disable-next-line:no-shadowed-variable
       const { left, righ } = this.trimText();
 
-      this.log(left + righ);
+      this.log(txtRight[0] + righ);
       return this.returnObjet(left, righ, txtRight[0] + righ);
     }
 

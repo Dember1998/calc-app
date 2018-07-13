@@ -5,6 +5,7 @@ import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
+import { isTrigonometria } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class AddTextService {
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
-    if (this.isTrigonometria(tecla)) {
+    if (isTrigonometria(tecla)) {
       this.addTexts(tecla + '(');
       this.calcService.setPosicionCursor(this.posicionCursor + 3);
     } else {
@@ -88,15 +89,6 @@ export class AddTextService {
       this.calcText = textInicio + this.textCursor.end;
     }
     this.calcText$.next(this.CalcText);
-  }
-
-  private isTrigonometria(tecla: string): boolean {
-    if (tecla === 'SEN' || tecla === 'COS' ||
-      tecla === 'TAN' || tecla === 'SQRT') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
 }

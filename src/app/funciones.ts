@@ -13,3 +13,8 @@ export function isTrigonometria(tecla: string): boolean {
     return false;
   }
 }
+
+export function isNumber(txt = ''): boolean {
+  const is: boolean = Number.isInteger(+txt);
+  return is;
+}

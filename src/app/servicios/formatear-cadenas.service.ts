@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isSigno } from '../funciones';
+import { isSigno, isNumber } from '../funciones';
 
 @Injectable({ providedIn: 'root' })
 export class FormatearCadenasService {
@@ -39,11 +39,6 @@ export class FormatearCadenasService {
         }
   }
 
-  isNumber(txt = ''): boolean {
-    const is: boolean = Number.isNaN(+txt);
-    return is;
-  }
-
   zero(_string: string) {
 
     let newStrin = '';
@@ -59,11 +54,11 @@ export class FormatearCadenasService {
 
       if (last === undefined && current === '.') {
         add('0.');
-      } else if (last === '%' && this.isNumber(current)) {
+      } else if (last === '%' && isNumber(current)) {
         add('*' + current);
       } else if (isSigno(last) && current === '.') {
         add('0.');
-      } else if (last === '.' && this.isNumber(current)) {
+      } else if (last === '.' && isNumber(current)) {
         add('0' + current);
       } else {
         add(current);

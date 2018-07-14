@@ -5,7 +5,7 @@ import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isTrigonometria } from '../funciones';
+import { isTrigonometria, isNumber } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,12 @@ export class AddTextService {
    */
   public setChar(tecla: string) {
     if (isTrigonometria(tecla)) {
-      this.addTexts(tecla + '(');
+
+      if (isNumber(this.calcText.charAt(this.calcText.length - 1))) {
+        this.addTexts(`*${tecla}(`);
+      } else {
+        this.addTexts(tecla + '(');
+      }
       this.calcService.setPosicionCursor(this.posicionCursor + 3);
     } else {
       this.addTexts(tecla);

@@ -78,7 +78,6 @@ export class AddTextService {
         this.calcText = this.textCursor.start + tecla + this.textCursor.end;
       }
     }
-    this.calcText = this.formatoService.zero(this.calcText);
   }
 
   /**elimina  un caracter de la cadena principal*/

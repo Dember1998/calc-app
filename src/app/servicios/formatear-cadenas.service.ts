@@ -38,32 +38,4 @@ export class FormatearCadenasService {
           return newStrin;
         }
   }
-
-  zero(_string: string) {
-
-    let newStrin = '';
-
-    const add = (txt: string) => {
-      newStrin += txt;
-    };
-
-    for (let i = 0; i < _string.length; i++) {
-
-      const current = _string[i];
-      const last = _string[i - 1];
-
-      if (last === undefined && current === '.') {
-        add('0.');
-      } else if (last === '%' && isNumber(current)) {
-        add('*' + current);
-      } else if (isSigno(last) && current === '.') {
-        add('0.');
-      } else if (last === '.' && isNumber(current)) {
-        add('0' + current);
-      } else {
-        add(current);
-      }
-    }
-    return newStrin;
-  }
 }

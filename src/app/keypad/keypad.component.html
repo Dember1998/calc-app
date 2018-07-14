@@ -1,6 +1,6 @@
-<div *ngFor="let fila of Filas" class="row">
+<div *ngFor="let teclas of Filas" class="row">
   <div class="btn-group">
-    <button *ngFor="let tecla of fila.Teclas" class="btn btn-margin" [ngClass]="clasBtn(tecla.nombre)"
-      (mousedown)="getTecla(tecla.nombre)" appCursor>{{tecla.nombre}}</button>
+    <button *ngFor="let tecla of teclas" class="btn btn-margin" [ngClass]="clasBtn(tecla)"
+      (mousedown)="getTecla(tecla)" appCursor>{{ tecla }}</button>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isTrigonometria, isNumber } from '../funciones';
+import { isTrigonometria, isNumber, isSigno } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,13 @@ export class AddTextService {
     return this.calcText;
   }
 
+  /**lastChar of textCursor.start */
+  private get lastChar(): string {
+    return this.textCursor.start.charAt(
+      this.textCursor.start.length - 1
+    );
+  }
+
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
@@ -50,7 +57,17 @@ export class AddTextService {
       }
       this.calcService.setPosicionCursor(this.posicionCursor + 3);
     } else {
-      this.addTexts(tecla);
+      if (!this.calcText && tecla === '.') {
+        this.addTexts(`0.`);
+      } else if (this.lastChar === '%' && isNumber(tecla)) {
+        this.addTexts(`*${tecla}`); // 4%2 = 4%*2
+      } else if (isSigno(this.lastChar) && tecla === '.') {
+        this.addTexts(`0.`); // 1+. = 1+0.
+      } else if (this.lastChar === '.' && isSigno(tecla)) {
+        this.addTexts(`0${tecla}`); // 1.+ = 1.0+
+      } else {
+        this.addTexts(tecla);
+      }
     }
     this.calcText$.next(this.CalcText);
   }

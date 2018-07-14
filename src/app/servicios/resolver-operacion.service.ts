@@ -38,7 +38,7 @@ export class ResolverOperacionService {
     // console.log(`formateando operacion = ${operacion}`);
     operacion = this.porcentaje(operacion);
 
-    let resultado:  string;
+    let resultado: string;
     try {
       resultado = !isSigno(operacion[operacion.length - 1]) ?
         // tslint:disable-next-line:no-eval
@@ -47,7 +47,10 @@ export class ResolverOperacionService {
       if (Number.isNaN(+resultado)) {
         resultado = '';
       }
-    } catch (Error) { console.log('se detecto un error: ', Error); }
+    } catch (Error) {
+      console.log('se detecto un error: ', Error);
+      resultado = 'ERROR';
+    }
 
     return resultado;
   }

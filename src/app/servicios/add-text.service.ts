@@ -48,6 +48,9 @@ export class AddTextService {
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
+    if (tecla === '√') {
+      tecla = 'SQRT';
+    }
     if (isTrigonometria(tecla)) {
 
       if (isNumber(this.calcText.charAt(this.calcText.length - 1))) {
@@ -55,7 +58,11 @@ export class AddTextService {
       } else {
         this.addTexts(tecla + '(');
       }
-      this.calcService.setPosicionCursor(this.posicionCursor + 4);
+      if (tecla === 'SQRT') {
+        this.calcService.setPosicionCursor(this.posicionCursor + 5);
+      } else {
+        this.calcService.setPosicionCursor(this.posicionCursor + 4);
+      }
     } else {
       if (!this.calcText && tecla === '.') {
         this.addTexts(`0.`);

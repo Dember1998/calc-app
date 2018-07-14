@@ -55,7 +55,7 @@ export class AddTextService {
       } else {
         this.addTexts(tecla + '(');
       }
-      this.calcService.setPosicionCursor(this.posicionCursor + 3);
+      this.calcService.setPosicionCursor(this.posicionCursor + 4);
     } else {
       if (!this.calcText && tecla === '.') {
         this.addTexts(`0.`);

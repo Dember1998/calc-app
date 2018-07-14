@@ -21,7 +21,7 @@ export class ResolverOperacionService {
     return newString;
   }
 
-  resolverOperacion(operacion = ''): number {
+  resolverOperacion(operacion = ''): string {
 
     const COS = x => Math.cos(x);
     const SEN = x => Math.sin(x);
@@ -38,12 +38,16 @@ export class ResolverOperacionService {
     // console.log(`formateando operacion = ${operacion}`);
     operacion = this.porcentaje(operacion);
 
-    let resultado: number;
+    let resultado:  string;
     try {
       resultado = !isSigno(operacion[operacion.length - 1]) ?
         // tslint:disable-next-line:no-eval
         eval(operacion) : null;
-    } catch (Error) { alert(Error); }
+
+      if (Number.isNaN(+resultado)) {
+        resultado = '';
+      }
+    } catch (Error) { console.log('se detecto un error: ', Error); }
 
     return resultado;
   }

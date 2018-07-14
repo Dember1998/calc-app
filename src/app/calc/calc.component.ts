@@ -17,7 +17,7 @@ import { AddTextService } from '../servicios/add-text.service';
 export class CalcComponent implements OnInit {
   posicionCursor = 0;
   /**contendra el resultado de cada operacion */
-  resultado: number;
+  resultado: string;
   /**Contine el la operacion actual */
   calcText = '';
   /**contiene el texto que esta a la izquierda y derecha del cursor */

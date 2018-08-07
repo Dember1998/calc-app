@@ -28,6 +28,8 @@ export class ResolverOperacionService {
     const TAN = x => Math.tan(x);
     const SQRT = x => Math.sqrt(x);
 
+    operacion = operacion.replace('√', 'SQRT');
+
     // se busca si el ultimo caracter no termina con
     // un parentesis o con un signo
     if (operacion.endsWith('(') || isSigno(operacion[operacion.length - 1])) {

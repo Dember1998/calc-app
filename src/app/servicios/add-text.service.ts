@@ -48,11 +48,8 @@ export class AddTextService {
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
-    if (tecla === '√') {
-      tecla = 'SQRT';
-    }
     if (isTrigonometria(tecla)) {
-
+      // 123COS = 123*COS(
       if (isNumber(this.calcText.charAt(this.calcText.length - 1))) {
         this.addTexts(`*${tecla}(`);
       } else {

@@ -11,7 +11,8 @@ export function isSigno(searchString = ''): boolean {
  */
 export function isTrigonometria(tecla: string, add = ''): boolean {
   if (tecla === `SEN${add}` || tecla === `COS${add}` ||
-    tecla === `TAN${add}` || tecla === `SQRT${add}`) {
+    tecla === `TAN${add}` || tecla === `SQRT${add}` ||
+    tecla === `√${add}`) {
     return true;
   } else {
     return false;

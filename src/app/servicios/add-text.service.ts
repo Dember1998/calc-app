@@ -44,13 +44,36 @@ export class AddTextService {
     );
   }
 
+  /**es numero el ultimo caracterde this.calcText */
+  private get isNumberLastChar() {
+    return isNumber(this.calcText.charAt(this.calcText.length - 1));
+  }
+
+  /** si los ultimos caracteres terminan en 'pi' 123pi  de this.calcText*/
+  private get isLastPi() {
+    const i = this.calcText.charAt(this.calcText.length - 1);
+    const p = this.calcText.charAt(this.calcText.length - 2);
+    return p + i === 'pi';
+  }
+
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
-    if (isTrigonometria(tecla)) {
+    if (this.isLastPi && isNumber(tecla)) {
+      this.addTexts('*');
+      this.calcService.setPosicionCursor(this.posicionCursor + 1);
+    }
+
+    // 12pi = 12*pi
+    if (tecla === 'pi') {
+      if (this.isNumberLastChar) {
+        this.addTexts(`*${tecla}`);
+        this.calcService.setPosicionCursor(this.posicionCursor + 2);
+      }
+    } else if (isTrigonometria(tecla)) {
       // 123COS = 123*COS(
-      if (isNumber(this.calcText.charAt(this.calcText.length - 1))) {
+      if (this.isNumberLastChar) {
         this.addTexts(`*${tecla}(`);
       } else {
         this.addTexts(tecla + '(');

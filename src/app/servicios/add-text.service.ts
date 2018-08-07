@@ -56,20 +56,24 @@ export class AddTextService {
     return p + i === 'pi';
   }
 
+  private setCursor(posicion: number) {
+    this.calcService.setPosicionCursor(posicion + 1);
+  }
+
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
     if (this.isLastPi && isNumber(tecla)) {
       this.addTexts('*');
-      this.calcService.setPosicionCursor(this.posicionCursor + 1);
+      this.setCursor(this.posicionCursor + 1);
     }
 
     // 12pi = 12*pi
     if (tecla === 'pi') {
       if (this.isNumberLastChar) {
         this.addTexts(`*${tecla}`);
-        this.calcService.setPosicionCursor(this.posicionCursor + 2);
+        this.setCursor(this.posicionCursor + 2);
       }
     } else if (isTrigonometria(tecla)) {
       // 123COS = 123*COS(
@@ -79,9 +83,9 @@ export class AddTextService {
         this.addTexts(tecla + '(');
       }
       if (tecla === 'SQRT') {
-        this.calcService.setPosicionCursor(this.posicionCursor + 5);
+        this.setCursor(this.posicionCursor + 5);
       } else {
-        this.calcService.setPosicionCursor(this.posicionCursor + 4);
+        this.setCursor(this.posicionCursor + 4);
       }
     } else {
       if (!this.calcText && tecla === '.') {

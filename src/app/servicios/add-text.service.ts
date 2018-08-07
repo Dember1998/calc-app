@@ -5,7 +5,7 @@ import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isTrigonometria, isNumber, isSigno } from '../funciones';
+import { isTrigonometria, isNumber, isSigno, isConstant } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -50,10 +50,10 @@ export class AddTextService {
   }
 
   /** si los ultimos caracteres terminan en 'pi' 123pi  de this.calcText*/
-  private get isLastPi() {
+  private get isLastConst() {
     const i = this.calcText.charAt(this.calcText.length - 1);
     const p = this.calcText.charAt(this.calcText.length - 2);
-    return p + i === 'pi';
+    return isConstant(p + i);
   }
 
   private setCursor(posicion: number) {
@@ -64,13 +64,13 @@ export class AddTextService {
    * una cadena a partir de esas pulsaciones
    */
   public setChar(tecla: string) {
-    if (this.isLastPi && isNumber(tecla)) {
+    if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');
       this.setCursor(this.posicionCursor + 1);
     }
 
     // 12pi = 12*pi
-    if (tecla === 'pi') {
+    if (isConstant(tecla)) {
       if (this.isNumberLastChar) {
         this.addTexts(`*${tecla}`);
         this.setCursor(this.posicionCursor + 2);

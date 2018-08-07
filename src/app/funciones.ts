@@ -23,3 +23,7 @@ export function isNumber(txt = ''): boolean {
   const is: boolean = Number.isInteger(+txt);
   return is;
 }
+
+export function isConstant(txt = ''): boolean {
+  return txt === 'pi' || txt === 'e';
+}

@@ -28,9 +28,11 @@ export class ResolverOperacionService {
     const TAN = x => Math.tan(x);
     const SQRT = x => Math.sqrt(x);
     const pi = Math.PI;
+    const e = Math.E;
 
     operacion = operacion.replace('√', 'SQRT');
     operacion = operacion.replace('pi', pi.toString());
+    operacion = operacion.replace('e', e.toString());
 
     // se busca si el ultimo caracter no termina con
     // un parentesis o con un signo

@@ -12,6 +12,7 @@ export class KeypadComponent {
   constructor() { }
 
   Filas = [
+    ['pi', 'e', '10x', 'xy', 'log'],
     ['√', '(', ')', '%', 'AC'],
     ['COS', '7', '8', '9', '/'],
     ['SEN', '4', '5', '6', '*'],

@@ -5,7 +5,7 @@ import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isTrigonometria, isNumber, isSigno, isConstant } from '../funciones';
+import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -142,14 +142,12 @@ export class AddTextService {
       if (isTrigonometria(cosC, '(')) {
         this.calcText = this.calcText.substr(0, lengthTxt - 4);
       } else {
-        this.calcText = this.calcText
-          .substr(0, this.calcText.length - 1);
+        this.calcText = deleteLast(this.calcText);
       }
     } else
       // 1+|2
       if (lengthTxt > this.posicionCursor) {
-        textInicio = textInicio
-          .substr(0, textInicio.length - 1);
+        textInicio = deleteLast(textInicio);
         this.calcText = textInicio + this.textCursor.end;
       }
     this.calcText$.next(this.CalcText);

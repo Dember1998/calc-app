@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormatearCadenasService } from './formatear-cadenas.service';
-import { isSigno, strLast } from '../funciones';
+import { isSigno, strLast, deleteLast } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +36,8 @@ export class ResolverOperacionService {
 
     // se busca si el ultimo caracter no termina con
     // un parentesis o con un signo
-    if (operacion.endsWith('(') || strLast(operacion)) {
-      operacion = operacion.substr(0, operacion.length - 1);
+    if (operacion.endsWith('(') || isSigno(strLast(operacion))) {
+      operacion = deleteLast(operacion);
     }
 
     operacion = this.formatear.parentisis(operacion);

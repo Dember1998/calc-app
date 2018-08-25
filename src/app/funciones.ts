@@ -35,3 +35,10 @@ export function isConstant(txt = ''): boolean {
 export function strLast(txt = ''): string {
   return txt.charAt(txt.length - 1);
 }
+
+/**
+ * elimina el ultimo elemento de una cadena y devuelve la cadena
+ */
+export function deleteLast(txt = '') {
+  return txt.substr(0, txt.length - 1);
+}

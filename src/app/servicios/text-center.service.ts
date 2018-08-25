@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TexCursor } from '../calc-class';
-import { isSigno } from '../funciones';
+import { isSigno, strLast } from '../funciones';
 import { TextCursorService } from './text-cursor.service';
 // tslint:disable-next-line:import-blacklist
 import { Subject, Observable } from 'rxjs';
@@ -95,7 +95,7 @@ export class TextCenterService {
     const txtRight = this.textCursor.end;
 
     // 1+|-23+5  = -23+
-    if (isSigno(txtLeft[txtLeft.length - 1]) && isSigno(txtRight[0])) {
+    if (isSigno(strLast(txtLeft)) && isSigno(txtRight[0])) {
       this.textCursor.end = txtRight.substr(1);
       // tslint:disable-next-line:no-shadowed-variable
       const { left, righ } = this.trimText();

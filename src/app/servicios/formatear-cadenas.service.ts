@@ -5,37 +5,53 @@ import { isSigno, isNumber } from '../funciones';
 export class FormatearCadenasService {
 
   constructor() { }
+  myString: string;
 
-
-  parentisis(_string: string): string {
-
-    let newStrin = '',
-      startParentesis = 0,
-      endParentesis = 0;
-
-    for (const current of _string) {
-      if (current === '(') { startParentesis++; }
-      if (current === ')') { endParentesis++; }
+  /**Devuelve la cantidad de parenteisis en la cadenea */
+  private numParentesis() {
+    let abre = 0;
+    let cierre = 0;
+    for (const current of this.myString) {
+      if (current === '(') { abre++; }
+      if (current === ')') { cierre++; }
     }
+    return { abre, cierre };
+  }
 
-    if (startParentesis === endParentesis) {
-      return _string;
+  /**Agrega los parentesis de cieere que faltan */
+  addParentesisCierre(numAbre: number) {
+    for (let x = 0; x < numAbre; x++) {
+      this.myString += ')';
+    }
+    return this.myString;
+  }
+
+  /**Agrega los parenteis de abre que faltan */
+  addParenteisAbre(numCierre: number) {
+    let newStrin = '';
+    for (let x = 0; x < numCierre; x++) {
+      newStrin += '(';
+    }
+    newStrin += this.myString;
+    return newStrin;
+  }
+
+  parentisis(txt: string): string {
+
+    this.myString = txt;
+
+    const num = this.numParentesis();
+
+    if (num.abre === num.cierre) {
+      return this.myString;
     } else
-      if (startParentesis > endParentesis) {
-        if (endParentesis !== 0) { startParentesis -= endParentesis; }
+      if (num.abre > num.cierre) {
+        if (num.cierre !== 0) { num.abre -= num.cierre; }
 
-        for (let x = 0; x < startParentesis; x++) {
-          _string += ')';
-        }
-        return _string;
+        return this.addParentesisCierre(num.abre);
       } else
-        if (startParentesis < endParentesis) {
-          if (startParentesis !== 0) { endParentesis -= startParentesis; }
-          for (let x = 0; x < endParentesis; x++) {
-            newStrin += '(';
-          }
-          newStrin += _string;
-          return newStrin;
+        if (num.abre < num.cierre) {
+          return this.addParenteisAbre(num.cierre);
         }
   }
 }

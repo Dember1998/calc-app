@@ -27,3 +27,11 @@ export function isNumber(txt = ''): boolean {
 export function isConstant(txt = ''): boolean {
   return txt === 'pi' || txt === 'e';
 }
+
+/**
+ * Devuelve el ultimo elemento de ua cadena
+ * @param txt cadena
+ */
+export function strLast(txt = ''): string {
+  return txt.charAt(txt.length - 1);
+}

@@ -6,6 +6,7 @@ import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { FormatearCadenasService } from './formatear-cadenas.service';
 import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
+import { FilterSignService } from './filter-sign.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class AddTextService {
   constructor(
     private calcService: CalcService,
     private textCursorService: TextCursorService,
-    private formatoService: FormatearCadenasService
+    private formatoService: FormatearCadenasService,
+    private filterSignService: FilterSignService
   ) {
     this.calcService
       .getPosicionCursor$()
@@ -60,6 +62,14 @@ export class AddTextService {
    * una cadena a partir de esas pulsaciones
    */
   public createText(tecla: string): Observable<string> {
+
+    /* se vefificara que que la sintaxis este correcta
+    por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
+    en caso de se incorrecta se finalizara la funcion
+    */
+    tecla = this.filterSignService.processkey(tecla);
+    if (!tecla) { return; }
+
     if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');
       this.setCursor(this.posicionCursor + 1);

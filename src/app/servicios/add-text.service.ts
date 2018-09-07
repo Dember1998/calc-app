@@ -61,14 +61,14 @@ export class AddTextService {
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
-  public createText(tecla: string): Observable<string> {
+  public createText(tecla: any): Observable<string> {
 
     /* se vefificara que que la sintaxis este correcta
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
     tecla = this.filterSignService.processkey(tecla);
-    if (!tecla) { return; }
+    if (tecla === false) { return; }
 
     if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');

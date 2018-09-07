@@ -15,7 +15,6 @@ import { AddTextService } from '../servicios/add-text.service';
   styleUrls: ['./calc.component.css']
 })
 export class CalcComponent implements OnInit {
-  posicionCursor = 0;
   /**contendra el resultado de cada operacion */
   resultado: string;
   /**Contine el la operacion actual */
@@ -24,9 +23,6 @@ export class CalcComponent implements OnInit {
   textCursor: TexCursor = { start: '', end: '' };
   /**la cantidad que esta bajo el cursor */
   private cantidadActual = '';
-
-  coma: boolean;
-  signo: boolean;
 
   constructor(
     public calcService: CalcService,
@@ -39,13 +35,6 @@ export class CalcComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.calcService
-      .getPosicionCursor$()
-      .subscribe((posicion) => {
-        this.posicionCursor = posicion;
-        this.filtrarComa();
-        this.filtrarSigno();
-      });
 
     this.textCenterService
       .getTextCenter$()
@@ -68,10 +57,6 @@ export class CalcComponent implements OnInit {
 
   getTecla(tecla: string) {
 
-    if (this.isBadSyntax(tecla)) {
-      return;
-    }
-
     if (tecla === '=') {
       this.igual();
     } else if (tecla === '+/-') {
@@ -92,40 +77,9 @@ export class CalcComponent implements OnInit {
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 
-  /**Debuelve true si hay un erro de sintanxis
-   * como cuando se intenta esciribir dos comas seguida "12.."
-   * o dos signos siguidos "+12++"
-   */
-  private isBadSyntax(tecla: string): boolean {
-    if (tecla === '.' && this.coma) {
-      return true;
-    } else if (tecla !== '+/-' && isSigno(tecla) && this.signo) {
-      return true;
-    } else if (tecla === '+/-' && !this.calcText) { return true; }
-    return false;
-  }
-
   /** envia el texto actual a los servicios */
   private setCalcTextToService() {
     this.calcService.setCalcText$(this.calcText);
   }
 
-  /** habilita o deshabilita la escritura de la coma*/
-  private filtrarComa() {
-    this.coma = this.cantidadActual
-      .includes('.') ? true : false;
-  }
-
-  /** habilita o deshabilita la escritura de los signos*/
-  private filtrarSigno() {
-    const
-      star = this.textCursor.start,
-      end = this.textCursor.end;
-
-    this.signo = isSigno(star[star.length - 1]) ||
-      isSigno(end[0]) ?
-      true : false;
-
-    // console.log('signo = ' + this.signo);
-  }
 }

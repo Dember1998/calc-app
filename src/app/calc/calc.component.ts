@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TexCursor } from '../calc-class';
-import { isSigno } from '../funciones';
 import { CalcService } from '../servicios/calc.service';
 import { FormatearCadenasService } from '../servicios/formatear-cadenas.service';
 import { TextCenterService } from '../servicios/text-center.service';

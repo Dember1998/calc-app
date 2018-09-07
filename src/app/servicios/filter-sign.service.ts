@@ -9,8 +9,6 @@ import { CalcService } from './calc.service';
   providedIn: 'root'
 })
 export class FilterSignService {
-
-  posicionCursor: number;
   private signo: boolean;
   /**contiene el texto que esta a la izquierda y derecha del cursor */
   private textCursor: TexCursor = { start: '', end: '' };
@@ -19,18 +17,9 @@ export class FilterSignService {
   private cantidadActual: string;
 
   constructor(
-    public calcService: CalcService,
     private textCenterService: TextCenterService,
     private textCursorService: TextCursorService,
   ) {
-
-    this.calcService
-      .getPosicionCursor$()
-      .subscribe((posicion) => {
-        this.posicionCursor = posicion;
-        this.filtrarComa();
-        this.filtrarSigno();
-      });
 
     this.textCenterService
       .getTextCenter$()
@@ -38,12 +27,14 @@ export class FilterSignService {
 
     this.textCursorService
       .getTextCursor$()
-      .subscribe(text => this.textCursor = text);
+      .subscribe(text => {
+        this.textCursor = text;
+        this.filtrarComa();
+        this.filtrarSigno();
+      });
   }
 
   public processkey(key: string): string | boolean {
-
-    console.log('procesando desde filterService');
 
     if (key === '.' && this.coma) {
       return false;

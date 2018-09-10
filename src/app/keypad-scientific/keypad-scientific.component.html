@@ -1,0 +1,6 @@
+<div *ngFor="let teclas of Filas">
+    <div class="btn-group">
+      <button *ngFor="let tecla of teclas" [ngClass]="clasBtn(tecla)"
+      (mousedown)="getTecla(tecla)"  appCursor [innerHTML]="tecla"></button>
+    </div>
+  </div>

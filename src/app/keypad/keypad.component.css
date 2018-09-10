@@ -20,3 +20,9 @@
 .operators:hover {
   background-color: rgb(58, 93, 128);
 }
+
+.btn-border {
+  width: 4rem;
+  border: 1px solid #fff;
+}
+

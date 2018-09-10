@@ -12,7 +12,7 @@
           <app-keypad (tecla)="getTecla($event)"></app-keypad>
         </div>
         <div class="col">
-          <app-history></app-history>
+          <app-history (HistorySelect)="calcText = $event"></app-history>
         </div>
       </div>
 

@@ -80,7 +80,7 @@ export class CalcComponent implements OnInit {
   }
 
   /** envia el texto actual a los servicios */
-  private setCalcTextToService() {
+ setCalcTextToService() {
     this.calcService.setCalcText$(this.calcText);
   }
 

@@ -8,6 +8,7 @@ import { InvertirCantidadService } from '../servicios/invertir-cantidad.service'
 import { TextCursorService } from '../servicios/text-cursor.service';
 import { AddTextService } from '../servicios/add-text.service';
 import { HistoryService } from '../servicios/history.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-calc',
@@ -23,6 +24,8 @@ export class CalcComponent implements OnInit {
   textCursor: TexCursor = { start: '', end: '' };
   /**la cantidad que esta bajo el cursor */
   private cantidadActual = '';
+
+  calcForm = new FormControl();
 
   constructor(
     public calcService: CalcService,
@@ -44,10 +47,15 @@ export class CalcComponent implements OnInit {
     this.textCursorService
       .getTextCursor$()
       .subscribe(text => this.textCursor = text);
+
+    this.calcForm.valueChanges.subscribe(valor => {
+      this.calcText = valor;
+      this.igual();
+    });
+
   }
 
   private igual() {
-    this.historiService.addHistory(this.calcText);
     this.calcText = this.formatoService.parentisis(this.calcText);
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
@@ -60,6 +68,7 @@ export class CalcComponent implements OnInit {
   getTecla(tecla: string) {
 
     if (tecla === '=') {
+      this.historiService.addHistory(this.calcText);
       this.igual();
     } else if (tecla === '+/-') {
       this.invertirNumbero();
@@ -73,14 +82,16 @@ export class CalcComponent implements OnInit {
 
     this.resolveOperation();
     this.setCalcTextToService();
+    this.calcForm.patchValue(this.calcText);
   }
+
 
   resolveOperation() {
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 
   /** envia el texto actual a los servicios */
- setCalcTextToService() {
+  setCalcTextToService() {
     this.calcService.setCalcText$(this.calcText);
   }
 

@@ -53,6 +53,10 @@ export class CalcComponent implements OnInit {
       this.igual();
     });
 
+    this.addTextService.getText$().subscribe(value => {
+      this.calcText = value;
+    });
+
   }
 
   private igual() {
@@ -75,9 +79,7 @@ export class CalcComponent implements OnInit {
     } else if (tecla === 'AC') {
       this.addTextService.delete();
     } else {
-      this.addTextService.createText(tecla).subscribe(text => {
-        this.calcText = text;
-      });
+      this.addTextService.createText(tecla);
     }
 
     this.resolveOperation();

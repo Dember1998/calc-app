@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
-import {  Observable, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
@@ -31,9 +31,13 @@ export class AddTextService {
   }
 
   private calcText = '';
+  private calcText$ = new Subject<string>();
   private posicionCursor = 0;
   private textCursor: TexCursor = { start: '', end: '' };
 
+  public get CalcText(): string {
+    return this.calcText;
+  }
 
   /**lastChar of textCursor.start */
   private get lastChar(): string {
@@ -61,14 +65,13 @@ export class AddTextService {
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
-  public createText(tecla: any): Observable<string> {
-
+  public createText(tecla: any) {
     /* se vefificara que que la sintaxis este correcta
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
-    tecla = this.filterSignService.processkey(tecla);
-    if (tecla === false) { return; }
+   tecla = this.filterSignService.processkey(tecla);
+   if (tecla === false) { return; }
 
     if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');
@@ -106,11 +109,15 @@ export class AddTextService {
         this.addTexts(tecla);
       }
     }
-    return of(this.calcText);
+    this.calcText$.next(this.CalcText);
   }
 
   public setText(text: string) {
     this.calcText = text;
+  }
+
+  public getText$() {
+    return this.calcText$.asObservable();
   }
 
   /**
@@ -152,6 +159,7 @@ export class AddTextService {
         textInicio = deleteLast(textInicio);
         this.calcText = textInicio + this.textCursor.end;
       }
+    this.calcText$.next(this.CalcText);
   }
 
 }

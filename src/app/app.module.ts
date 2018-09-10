@@ -6,6 +6,7 @@ import { CalcComponent } from './calc/calc.component';
 import { KeypadComponent } from './keypad/keypad.component';
 import { CursorDirective } from './cursor.directive';
 import { TextCalcDirective } from './text-calc.directive';
+import { HistoryComponent } from './history/history.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -17,6 +18,7 @@ import { TextCalcDirective } from './text-calc.directive';
     KeypadComponent,
     CursorDirective,
     TextCalcDirective,
+    HistoryComponent,
   ],
 
   bootstrap: [AppComponent]

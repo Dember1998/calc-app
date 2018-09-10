@@ -7,6 +7,7 @@ import { ResolverOperacionService } from '../servicios/resolver-operacion.servic
 import { InvertirCantidadService } from '../servicios/invertir-cantidad.service';
 import { TextCursorService } from '../servicios/text-cursor.service';
 import { AddTextService } from '../servicios/add-text.service';
+import { HistoryService } from '../servicios/history.service';
 
 @Component({
   selector: 'app-calc',
@@ -30,7 +31,8 @@ export class CalcComponent implements OnInit {
     private resolverOperacion: ResolverOperacionService,
     private invertirService: InvertirCantidadService,
     private textCursorService: TextCursorService,
-    private addTextService: AddTextService
+    private addTextService: AddTextService,
+    private historiService: HistoryService
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,7 @@ export class CalcComponent implements OnInit {
   }
 
   private igual() {
+    this.historiService.addHistory(this.calcText);
     this.calcText = this.formatoService.parentisis(this.calcText);
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }

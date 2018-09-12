@@ -23,7 +23,7 @@ export class CalcComponent implements OnInit {
   /**contiene el texto que esta a la izquierda y derecha del cursor */
   textCursor: TexCursor = { start: '', end: '' };
   /**la cantidad que esta bajo el cursor */
-  private cantidadActual = '';
+  cantidadActual = '';
 
   calcForm = new FormControl();
 

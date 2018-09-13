@@ -25,7 +25,7 @@ export class InvertirCantidadService {
       .getCalcText$()
       .subscribe(text => this.calcText = text);
 
-      this.textCenterService
+    this.textCenterService
       .getTextCenter$()
       .subscribe(text => this.cantidadActual = text);
 
@@ -56,7 +56,10 @@ export class InvertirCantidadService {
 
   /**devuelve  la cantidad actual con el signo a la derecha eliminado ejemplo 123+ = 123 */
   eliminarSignoDerecha(txt: string) {
-    return new EliminarSignoDerecha(txt);
+    const cantidad = /^(\D*)(\d+)/.exec(txt)[0];
+    const busquedaSigno = /(\D+)$/.exec(txt);
+    const signo = busquedaSigno ? busquedaSigno[0] : '';
+    return { cantidad, signo };
   }
 
   eliminarSingoIzquieda(txt: string) {

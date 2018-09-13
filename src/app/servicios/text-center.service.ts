@@ -23,9 +23,7 @@ export class TextCenterService {
   constructor(
     private textCursorService: TextCursorService
   ) {
-    this.textCursorService
-      .getTextCursor$()
-      .subscribe(text => {
+    this.textCursorService.getTextCursor$().subscribe(text => {
         this.textCursor = text;
         this.setTextCenterCursor();
       }
@@ -34,25 +32,6 @@ export class TextCenterService {
 
   private textCursor: TexCursor;
   private textCenterCursor$ = new Subject<ITexCenter>();
-
-  private signosOpcionales = '([\+\-\/\*]?)';
-
-  private txtCenter =
-    this.signosOpcionales + '([0-9]*)' +
-    // cursor
-    '[\|]' +
-
-    '(' +
-
-    //  |1+
-    '(([0-9]+)' + this.signosOpcionales + ')|' +
-
-    // number negative
-    '((-[0-9]+)' + this.signosOpcionales + ')|' +
-
-    // 12|+
-    '(([0-9]*)' + this.signosOpcionales + ')' +
-    ')';
 
   private setTextCenterCursor() {
     this.textCenterCursor$.next(this.TextCenterCursor());
@@ -67,22 +46,30 @@ export class TextCenterService {
     const txtCalc = this.textCursor.start + '|' + this.textCursor.end;
 
 
-    const patron = new RegExp(this.txtCenter);
+    function textCenter(str: string) {
+      // handel +|-23
+      if (/[\+\-\/\*]\|-/.test(str)) {
+        const menos = /[\+\-\/\*]\|[\+\-\/\*]([0-9]+)([\+\-\/\*]*)/;
+        // tslint:disable-next-line:no-shadowed-variable
+        const result = menos.exec(str);
+        return result ? result[0] : undefined;
+      }
 
-    const exec = txtCalc.match(patron);
+      const txtCenter = /([\+\-\/\*]?)(\d*)\|(\d*)([\+\-\/\*]?)/;
+      let result: any = txtCenter.exec(str);
+      result = result ? result[0] : undefined;
 
-    // console.log('completo ', exec);
+      return result;
+    }
 
-    const res = exec ? exec[0] : undefined;
+   const center = this.removeCursor(textCenter(txtCalc));
 
-    // console.log('cadena : ', str);
-    // console.log('patron :', patron.source);
-    // console.log(exec);
+    return { center, left: '', righ: '' };
+  }
 
-    let final: any = Array.from(res);
-    final = final.filter(str => str !== '|');
-    final = ''.concat(...final);
-
-    return { center: final, left: '', righ: '' };
+  removeCursor(str: string) {
+    let res: any = Array.from(str).filter(char => char !== '|');
+    res = ''.concat(...res);
+    return res;
   }
 }

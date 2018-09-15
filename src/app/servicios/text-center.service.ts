@@ -7,6 +7,8 @@ import { Subject, Observable } from 'rxjs';
 
 /** cantidad bajo el cursor*/
 export interface ITexCenter {
+  /** cantidad bajo el cursor, con su signos  y su cursor */
+  centerCursor?: string;
   /** cantidad bajo el cursor, con su signos */
   center?: string;
   /**la cadena a la izquierda de "center"*/
@@ -24,10 +26,10 @@ export class TextCenterService {
     private textCursorService: TextCursorService
   ) {
     this.textCursorService.getTextCursor$().subscribe(text => {
-        this.textCursor = text;
-        this.setTextCenterCursor();
-      }
-      );
+      this.textCursor = text;
+      this.setTextCenterCursor();
+    }
+    );
   }
 
   private textCursor: TexCursor;
@@ -62,9 +64,10 @@ export class TextCenterService {
       return result;
     }
 
-   const center = this.removeCursor(textCenter(txtCalc));
+    const centerCursor = textCenter(txtCalc);
+    const center = this.removeCursor(centerCursor);
 
-    return { center, left: '', righ: '' };
+    return { center, left: '', righ: '' , centerCursor};
   }
 
   removeCursor(str: string) {

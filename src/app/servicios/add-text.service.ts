@@ -70,8 +70,8 @@ export class AddTextService {
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
-   tecla = this.filterSignService.processkey(tecla);
-   if (tecla === false) { return; }
+  // tecla = this.filterSignService.processkey(tecla);
+ //  if (tecla === false) { return; }
 
     if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');

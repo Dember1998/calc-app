@@ -25,6 +25,14 @@ export class CalcComponent implements OnInit {
   /**la cantidad que esta bajo el cursor */
   cantidadActual = '';
 
+  listCalc: string[] = [
+    'estandar',
+    'cientifica',
+    'programador'
+  ];
+
+  calcSelect: string;
+
   calcForm = new FormControl();
 
   constructor(
@@ -36,7 +44,9 @@ export class CalcComponent implements OnInit {
     private textCursorService: TextCursorService,
     private addTextService: AddTextService,
     private historiService: HistoryService
-  ) { }
+  ) {
+    this.calcSelect = this.listCalc[1];
+  }
 
   ngOnInit() {
 

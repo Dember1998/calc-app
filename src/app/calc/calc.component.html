@@ -27,18 +27,18 @@
 
     <div class="col-3">
       <div class="list-group">
-        <a href="" class="list-group-item">estandar</a>
-        <a href="" class="list-group-item active">cientifica</a>
-        <a href="" class="list-group-item">programador</a>
+        <button *ngFor="let calc of listCalc" (click)="calcSelect = calc" [class.active]="calcSelect === calc" class="list-group-item">
+          {{calc}}
+        </button>
       </div>
     </div>
 
     <div class="col">
       <div class="row">
-        <div class="col">
+        <div class="col" *ngIf="calcSelect === 'cientifica'">
           <app-keypad-scientific (tecla)="getTecla($event)"></app-keypad-scientific>
         </div>
-        <div class="col-7">
+        <div class="col">
           <app-keypad (tecla)="getTecla($event)"></app-keypad>
         </div>
       </div>

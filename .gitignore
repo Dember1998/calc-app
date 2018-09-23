@@ -20,3 +20,4 @@ tsconfig.app.json
 tsconfig.spec.json
 .vscode/
 *.spec.ts
+.idea/

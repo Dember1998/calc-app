@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { CalcService } from './servicios/calc.service';
+import {CursorService} from './servicios/cursor.service';
 
 @Directive({
   selector: '[appCursor]'
@@ -11,13 +11,13 @@ export class CursorDirective implements OnInit {
   btn: HTMLElement; // referencial al boton actual
 
   ngOnInit(): void {
-    this.calcService.getPosicionCursor$()
+    this.cursorService.getPosicionCursor$()
       .subscribe(valor => this.posicionCursor = valor);
     this.btn = this.el.nativeElement;
     this.form = document.getElementById('pantalla') as HTMLInputElement;
   }
 
-  constructor(private calcService: CalcService, private el: ElementRef) { }
+  constructor(private cursorService: CursorService, private el: ElementRef) { }
 
   setCursor(posicion: number) {
     this.form.selectionEnd = posicion;

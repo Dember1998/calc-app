@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isSigno } from '../funciones';
+import { isSigno, isNumber } from '../funciones';
 import { CalcService } from './calc.service';
 import { TextCenterService, ITexCenter } from './text-center.service';
 import { TexCursor } from '../calc-class';
@@ -11,21 +11,15 @@ import { EliminarSignoDerecha, EliminarSignoIzquieda } from './eliminarSigno';
 })
 export class InvertirCantidadService {
 
-  calcText = '';
   textCursor: TexCursor;
   cantidadActual: ITexCenter;
 
   constructor(
-    public calcService: CalcService,
     private textCenterService: TextCenterService,
     private textCursorService: TextCursorService
   ) {
 
-    this.calcService
-      .getCalcText$()
-      .subscribe(text => this.calcText = text);
-
-      this.textCenterService
+    this.textCenterService
       .getTextCenter$()
       .subscribe(text => this.cantidadActual = text);
 
@@ -36,55 +30,77 @@ export class InvertirCantidadService {
 
   // convierte positivo a negativo y biseversa la cantidad actual
   invertir(): string {
-    // no llamar a invertir  cuando la cadena actual es un signo
-    if (this.isLastSigno()) {
-      return this.textCursor.start + this.textCursor.end;
+    let txtCenter = this.getCantidadActual();
+    let calcText = this.calcTextCursor;
+
+    calcText = calcText.replace(txtCenter.match(/(\-?)(\d*)\|(\d*)/)[0], '|');
+    txtCenter = this.invertirEsto(txtCenter);
+    calcText = calcText.replace('|', txtCenter);
+    calcText = this.reduceSignos(calcText);
+
+    return this.removeCursor(calcText);
+  }
+
+  /**elimina signos repetidos */
+  reduceSignos(str: string): string {
+    for (let signo of '+-/*') {
+      str = this.reduceMultiples(str, signo);
     }
+    return str;
+  }
 
-    const cantidad: string = this.multiplicarPorMenosUno(this.cantidadActual.center);
-    const newStr = this.ReemplazarEnCalcTxt(cantidad);
+  removeCursor(str: string) {
+    let result = Array.from(str).filter(char => char !== '|');
+    return ''.concat(...result);
+  }
+
+  /**Reduce múltiples instancias de un carácter particular que ocurren uno detrás de otro */
+  reduceMultiples(str: string, character: string) {
+    let pattern = new RegExp(`\\${character}{2,}`);
+    return str.replace(pattern, character);
+  }
+
+  invertirEsto(cantidad: string) {
+    if (isNumber(cantidad[0])) {
+      return `-${cantidad}`;
+    } else if (cantidad.startsWith('-')) {
+      return cantidad.replace(/^\-/, '+');
+    } else if (cantidad.startsWith('+')) {
+      return cantidad.replace(/^\+/, '-');
+    }
+  }
+
+  public get calcTextCursor(): string {
+    return this.textCursor.start + '|' + this.textCursor.end;
+  }
+
+  /**
+   * obtiene la cantidad actual con todas las apariciones de signos
+   * a los lados
+   */
+  getCantidadActual(): string {
+    let txtCenter = this.cantidadActual.centerCursor;
+    txtCenter = this.escapeStrToRegExpr(txtCenter);
+
+    let txtCenterCursor_REGEXP = new RegExp(`(\D*)${txtCenter}(\D*)`);
+    let result = txtCenterCursor_REGEXP.exec(this.calcTextCursor);
+
+    return result[0];
+  }
+
+  /**
+   * prepara una cadena para ser utilizada en RegExpr
+   */
+  escapeStrToRegExpr(str: string) {
+    let newStr = '';
+    for (let char of str) {
+      if (isSigno(char) || char.includes('|')) {
+        newStr += '\\' + char;
+      } else {
+        newStr += char;
+      }
+    }
     return newStr;
-  }
-
-  /**caso 12- */
-  isLastSigno(): boolean {
-    const length: number = this.cantidadActual.center.length;
-    const isLast = length === 1 && isSigno(this.cantidadActual.center);
-
-    return isLast;
-  }
-
-  /**devuelve  la cantidad actual con el signo a la derecha eliminado ejemplo 123+ = 123 */
-  eliminarSignoDerecha(txt: string) {
-    return new EliminarSignoDerecha(txt);
-  }
-
-  eliminarSingoIzquieda(txt: string) {
-    return new EliminarSignoIzquieda(txt);
-  }
-
-  multiplicarPorMenosUno(txtCenter: string): string {
-    const deleteSigno = this.eliminarSignoDerecha(txtCenter);
-    // multiplicacion * -1
-    let cantidad: string = deleteSigno.cantidad;
-    cantidad = (Number(cantidad) * -1) + deleteSigno.signo;
-
-    return cantidad;
-  }
-
-  /**Reemplaza la cantidad invertida en la cadena principal */
-  ReemplazarEnCalcTxt(cantidad: string): string {
-    const center = this.cantidadActual;
-    let newStrActual = center.left + '|' + center.righ;
-    newStrActual = this.eliminarSingoIzquieda(newStrActual).cantidad;
-    let newStrCompleto = this.textCursor.start + '|' + this.textCursor.end;
-
-    newStrCompleto = newStrCompleto
-      .replace(
-        newStrActual, cantidad
-      );
-
-    return newStrCompleto;
   }
 }
 

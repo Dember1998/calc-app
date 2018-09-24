@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
-import {  Observable, of } from 'rxjs';
-import { CalcService } from './calc.service';
+import { Subject } from 'rxjs';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
-import { FormatearCadenasService } from './formatear-cadenas.service';
 import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
-import { FilterSignService } from './filter-sign.service';
+import {CursorService} from './cursor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +12,10 @@ import { FilterSignService } from './filter-sign.service';
 export class AddTextService {
 
   constructor(
-    private calcService: CalcService,
+    private cursorService: CursorService,
     private textCursorService: TextCursorService,
-    private formatoService: FormatearCadenasService,
-    private filterSignService: FilterSignService
   ) {
-    this.calcService
+    this.cursorService
       .getPosicionCursor$()
       .subscribe(posicion => this.posicionCursor = posicion);
 
@@ -31,9 +27,13 @@ export class AddTextService {
   }
 
   private calcText = '';
+  private calcText$ = new Subject<string>();
   private posicionCursor = 0;
   private textCursor: TexCursor = { start: '', end: '' };
 
+  public get CalcText(): string {
+    return this.calcText;
+  }
 
   /**lastChar of textCursor.start */
   private get lastChar(): string {
@@ -55,20 +55,19 @@ export class AddTextService {
   }
 
   private setCursor(posicion: number) {
-    this.calcService.setPosicionCursor(posicion + 1);
+    this.cursorService.setPosicionCursor(posicion + 1);
   }
 
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
-  public createText(tecla: any): Observable<string> {
-
+  public createText(tecla: any) {
     /* se vefificara que que la sintaxis este correcta
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
-    tecla = this.filterSignService.processkey(tecla);
-    if (tecla === false) { return; }
+  // tecla = this.filterSignService.processkey(tecla);
+ //  if (tecla === false) { return; }
 
     if (this.isLastConst && isNumber(tecla)) {
       this.addTexts('*');
@@ -106,11 +105,15 @@ export class AddTextService {
         this.addTexts(tecla);
       }
     }
-    return of(this.calcText);
+    this.calcText$.next(this.CalcText);
   }
 
   public setText(text: string) {
     this.calcText = text;
+  }
+
+  public getText$() {
+    return this.calcText$.asObservable();
   }
 
   /**
@@ -152,6 +155,7 @@ export class AddTextService {
         textInicio = deleteLast(textInicio);
         this.calcText = textInicio + this.textCursor.end;
       }
+    this.calcText$.next(this.CalcText);
   }
 
 }

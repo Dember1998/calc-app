@@ -1,17 +1,51 @@
 <div class="container">
-  <div class="card border-success w-100">
-    <h2 class="card-header border-success bg-transparent ">={{ resultado }}</h2>
-    <div class="card-body">
-      <input style="font-size: 200%" type="text" class="form-control card-text" placeholder="0" [value]="calcText" id="pantalla"
-        autofocus appTextCalc>
+
+  <div class="row">
+    <div class="col">
+      <h2>={{ resultado }}</h2>
+    </div>
+    <div class="col-5">
+      <app-history (HistorySelect)="calcForm.setValue($event)"></app-history>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <input [formControl]="calcForm" style="font-size: 3rem" type="text" class="form-control" placeholder="0" id="pantalla" autofocus
+        appTextCalc>
+    </div>
+  </div>
+
+  <div class="row justify-content-end">
+    <div class="col-2">
+      <button class="btn btn-lg btn-danger">C</button>
+      <button (mousedown)="getTecla('AC')" appCursor class="btn btn-lg btn-danger">AC</button>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-3">
+      <div class="list-group">
+        <button *ngFor="let calc of listCalc" (click)="calcSelect = calc" [class.active]="calcSelect === calc" class="list-group-item">
+          {{calc}}
+        </button>
+      </div>
     </div>
 
-    <div class="card-footer bg-transparent border-success">
-
+    <div class="col">
+      <div class="row">
+        <div class="col" *ngIf="calcSelect === 'cientifica'">
+          <app-keypad-scientific (tecla)="getTecla($event)"></app-keypad-scientific>
+        </div>
+        <div class="col">
           <app-keypad (tecla)="getTecla($event)"></app-keypad>
-
+        </div>
+      </div>
     </div>
+
 
   </div>
+
   <p class="h1" *ngIf="textCursor">text cursor start="{{ textCursor.start }}" end="{{ textCursor.end }}"</p>
 </div>

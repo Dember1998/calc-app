@@ -26,9 +26,9 @@ export class KeypadComponent {
 
   clasBtn(tecla: string) {
     if (tecla >= '0' && tecla <= '9') {
-      return 'btn-secondary';
+      return 'btn btn-secondary btn-block';
     } else {
-      return 'btn-dark';
+      return 'btn btn-dark btn-block';
     }
   }
 }

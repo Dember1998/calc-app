@@ -1,6 +1,6 @@
-<div *ngFor="let teclas of Filas" class="row">
-  <div class="btn-group">
-    <button *ngFor="let tecla of teclas" class="btn btn-margin" [ngClass]="clasBtn(tecla)"
+<div *ngFor="let teclas of Filas" class="row no-gutters">
+  <div class="col" *ngFor="let tecla of teclas">
+    <button [ngClass]="clasBtn(tecla)"
       (mousedown)="getTecla(tecla)" appCursor>{{ tecla }}</button>
   </div>
 </div>

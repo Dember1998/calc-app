@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { CalcService } from './servicios/calc.service';
+import {CursorService} from './servicios/cursor.service';
 
 @Directive({
   selector: '[appTextCalc]'
@@ -7,7 +7,7 @@ import { CalcService } from './servicios/calc.service';
 export class TextCalcDirective implements OnInit {
 
   form: HTMLInputElement; // referencial a la pantalla
-  constructor(public el: ElementRef, private calcService: CalcService) {
+  constructor(public el: ElementRef, private cursorService: CursorService) {
     this.form = this.el.nativeElement;
   }
 
@@ -29,7 +29,7 @@ export class TextCalcDirective implements OnInit {
 
   setCursor() {
     setTimeout(() => { // enviar la posicion del cursor
-      this.calcService.setPosicionCursor(this.form.selectionStart);
+      this.cursorService.setPosicionCursor(this.form.selectionStart);
     }, 20);
   }
 

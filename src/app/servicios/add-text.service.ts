@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
 import { Subject } from 'rxjs';
-import { CalcService } from './calc.service';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
-import { FormatearCadenasService } from './formatear-cadenas.service';
 import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
-import { FilterSignService } from './filter-sign.service';
+import {CursorService} from './cursor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +12,10 @@ import { FilterSignService } from './filter-sign.service';
 export class AddTextService {
 
   constructor(
-    private calcService: CalcService,
+    private cursorService: CursorService,
     private textCursorService: TextCursorService,
-    private formatoService: FormatearCadenasService,
-    private filterSignService: FilterSignService
   ) {
-    this.calcService
+    this.cursorService
       .getPosicionCursor$()
       .subscribe(posicion => this.posicionCursor = posicion);
 
@@ -59,7 +55,7 @@ export class AddTextService {
   }
 
   private setCursor(posicion: number) {
-    this.calcService.setPosicionCursor(posicion + 1);
+    this.cursorService.setPosicionCursor(posicion + 1);
   }
 
   /**se reciben la mayoria de las teclas pulsadas y se crea

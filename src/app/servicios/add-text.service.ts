@@ -65,26 +65,34 @@ export class AddTextService {
 
     // 12pi = 12*pi
     if (isConstant(tecla)) {
-      if (this.isNumberLastChar) {
-        this.addTexts(`*${tecla}`);
-        this.setCursor(this.posicionCursor + 2);
-      }
+      this.handleConstant(tecla);
     } else if (isTrigonometria(tecla)) {
-      // 123COS = 123*COS(
-      if (this.isNumberLastChar) {
-        this.addTexts(`*${tecla}(`);
-      } else {
-        this.addTexts(tecla + '(');
-      }
-      if (tecla === 'SQRT') {
-        this.setCursor(this.posicionCursor + 5);
-      } else {
-        this.setCursor(this.posicionCursor + 4);
-      }
+      this.handleTrigonometria(tecla);
     } else {
       this.addZero(tecla);
     }
     this.calcText$.next(this.calcText);
+  }
+
+  private handleConstant(tecla: string) {
+    if (this.isNumberLastChar) {
+      this.addTexts(`*${tecla}`);
+      this.setCursor(this.posicionCursor + 2);
+    }
+  }
+
+  private handleTrigonometria(tecla: string) {
+    // 123COS = 123*COS(
+    if (this.isNumberLastChar) {
+      this.addTexts(`*${tecla}(`);
+    } else {
+      this.addTexts(tecla + '(');
+    }
+    if (tecla === 'SQRT') {
+      this.setCursor(this.posicionCursor + 5);
+    } else {
+      this.setCursor(this.posicionCursor + 4);
+    }
   }
 
   private addZero(tecla: string) {

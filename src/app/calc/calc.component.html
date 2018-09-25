@@ -16,16 +16,9 @@
     </div>
   </div>
 
-  <div class="row justify-content-end">
-    <div class="col-2">
-      <button class="btn btn-lg btn-danger">C</button>
-      <button (mousedown)="getTecla('AC')" appCursor class="btn btn-lg btn-danger">AC</button>
-    </div>
-  </div>
-
   <div class="row">
 
-    <div class="col-3">
+    <div class="col-12 col-xl-12 col-sm-12 col-md-12 col-lg-3 order-last order-xl-last order-sm-last order-md-last">
       <div class="list-group">
         <button *ngFor="let calc of listCalc" (click)="calcSelect = calc" [class.active]="calcSelect === calc" class="list-group-item">
           {{calc}}
@@ -33,7 +26,7 @@
       </div>
     </div>
 
-    <div class="col">
+    <div class="col-12 col-xl-12 col-sm-12 col-md-12 col-lg-9">
       <div class="row">
         <div class="col" *ngIf="calcSelect === 'cientifica'">
           <app-keypad-scientific (tecla)="getTecla($event)"></app-keypad-scientific>

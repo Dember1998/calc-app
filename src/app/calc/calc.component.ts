@@ -8,7 +8,6 @@ import { InvertirCantidadService } from '../servicios/invertir-cantidad.service'
 import { TextCursorService } from '../servicios/text-cursor.service';
 import { AddTextService } from '../servicios/add-text.service';
 import { HistoryService } from '../servicios/history.service';
-import { FormControl } from '@angular/forms';
 import { DeleteTextService } from '../servicios/delete-text.service';
 
 @Component({
@@ -34,8 +33,6 @@ export class CalcComponent implements OnInit {
 
   calcSelect: string;
 
-  calcForm = new FormControl();
-
   constructor(
     public calcService: CalcService,
     public formatoService: FormatearCadenasService,
@@ -60,15 +57,9 @@ export class CalcComponent implements OnInit {
       .getTextCursor$()
       .subscribe(text => this.textCursor = text);
 
-    this.calcForm.valueChanges.subscribe(valor => {
-      this.calcText = valor;
-      this.igual();
-    });
-
     this.addTextService.getText$().subscribe(value => {
       this.calcText = value;
     });
-
   }
 
   private igual() {
@@ -89,14 +80,14 @@ export class CalcComponent implements OnInit {
     } else if (tecla === '+/-') {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
-      this.calcForm.patchValue(this.deleteTextService.delete());
+      this.calcText = this.deleteTextService.delete();
     } else {
       this.addTextService.createText(tecla);
     }
 
     this.resolveOperation();
     this.setCalcTextToService();
-    this.calcForm.patchValue(this.calcText);
+    this.igual();
   }
 
 

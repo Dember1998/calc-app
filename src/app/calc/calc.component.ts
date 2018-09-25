@@ -9,6 +9,7 @@ import { TextCursorService } from '../servicios/text-cursor.service';
 import { AddTextService } from '../servicios/add-text.service';
 import { HistoryService } from '../servicios/history.service';
 import { FormControl } from '@angular/forms';
+import { DeleteTextService } from '../servicios/delete-text.service';
 
 @Component({
   selector: 'app-calc',
@@ -43,7 +44,8 @@ export class CalcComponent implements OnInit {
     private invertirService: InvertirCantidadService,
     private textCursorService: TextCursorService,
     private addTextService: AddTextService,
-    private historiService: HistoryService
+    private historiService: HistoryService,
+    private deleteTextService: DeleteTextService
   ) {
     this.calcSelect = this.listCalc[0];
   }
@@ -87,7 +89,7 @@ export class CalcComponent implements OnInit {
     } else if (tecla === '+/-') {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
-      this.addTextService.delete();
+      this.calcForm.patchValue(this.deleteTextService.delete());
     } else {
       this.addTextService.createText(tecla);
     }

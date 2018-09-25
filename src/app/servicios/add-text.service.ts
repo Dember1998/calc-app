@@ -133,29 +133,4 @@ export class AddTextService {
     }
   }
 
-  /**elimina  un caracter de la cadena principal*/
-  public delete() {
-    let textInicio = this.textCursor.start;
-    /** this.calcText.length */
-    const lengthTxt = this.calcText.length;
-    // 1+2|
-
-    // COS(
-    const cosC = this.calcText.substr(lengthTxt - 4);
-    if (lengthTxt === this.posicionCursor) {
-      // eliminar COS(
-      if (isTrigonometria(cosC, '(')) {
-        this.calcText = this.calcText.substr(0, lengthTxt - 4);
-      } else {
-        this.calcText = deleteLast(this.calcText);
-      }
-    } else
-      // 1+|2
-      if (lengthTxt > this.posicionCursor) {
-        textInicio = deleteLast(textInicio);
-        this.calcText = textInicio + this.textCursor.end;
-      }
-    this.calcText$.next(this.CalcText);
-  }
-
 }

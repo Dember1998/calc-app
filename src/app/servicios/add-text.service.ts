@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
-import {CursorService} from './cursor.service';
+import { CursorService } from './cursor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,8 +55,8 @@ export class AddTextService {
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
-  // tecla = this.filterSignService.processkey(tecla);
- //  if (tecla === false) { return; }
+    // tecla = this.filterSignService.processkey(tecla);
+    //  if (tecla === false) { return; }
 
     if (/pi|e$/.test(this.calcText) && isNumber(tecla)) {
       this.addTexts('*');
@@ -82,19 +82,23 @@ export class AddTextService {
         this.setCursor(this.posicionCursor + 4);
       }
     } else {
-      if (!this.calcText && tecla === '.') {
-        this.addTexts(`0.`);
-      } else if (this.lastChar === '%' && isNumber(tecla)) {
-        this.addTexts(`*${tecla}`); // 4%2 = 4%*2
-      } else if (isSigno(this.lastChar) && tecla === '.') {
-        this.addTexts(`0.`); // 1+. = 1+0.
-      } else if (this.lastChar === '.' && isSigno(tecla)) {
-        this.addTexts(`0${tecla}`); // 1.+ = 1.0+
-      } else {
-        this.addTexts(tecla);
-      }
+      this.addZero(tecla);
     }
     this.calcText$.next(this.calcText);
+  }
+
+  private addZero(tecla: string) {
+    if (!this.calcText && tecla === '.') {
+      this.addTexts(`0.`);
+    } else if (this.lastChar === '%' && isNumber(tecla)) {
+      this.addTexts(`*${tecla}`); // 4%2 = 4%*2
+    } else if (isSigno(this.lastChar) && tecla === '.') {
+      this.addTexts(`0.`); // 1+. = 1+0.
+    } else if (this.lastChar === '.' && isSigno(tecla)) {
+      this.addTexts(`0${tecla}`); // 1.+ = 1.0+
+    } else {
+      this.addTexts(tecla);
+    }
   }
 
   public setText(text: string) {

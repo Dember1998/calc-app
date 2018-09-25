@@ -31,10 +31,6 @@ export class AddTextService {
   private posicionCursor = 0;
   private textCursor: TexCursor = { start: '', end: '' };
 
-  public get CalcText(): string {
-    return this.calcText;
-  }
-
   /**lastChar of textCursor.start */
   private get lastChar(): string {
     return this.textCursor.start.charAt(
@@ -98,7 +94,7 @@ export class AddTextService {
         this.addTexts(tecla);
       }
     }
-    this.calcText$.next(this.CalcText);
+    this.calcText$.next(this.calcText);
   }
 
   public setText(text: string) {

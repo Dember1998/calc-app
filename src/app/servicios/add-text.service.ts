@@ -47,13 +47,6 @@ export class AddTextService {
     return isNumber(this.calcText.charAt(this.calcText.length - 1));
   }
 
-  /** si los ultimos caracteres terminan en 'pi' 123pi  de this.calcText*/
-  private get isLastConst() {
-    const i = this.calcText.charAt(this.calcText.length - 1);
-    const p = this.calcText.charAt(this.calcText.length - 2);
-    return isConstant(p + i);
-  }
-
   private setCursor(posicion: number) {
     this.cursorService.setPosicionCursor(posicion + 1);
   }
@@ -69,7 +62,7 @@ export class AddTextService {
   // tecla = this.filterSignService.processkey(tecla);
  //  if (tecla === false) { return; }
 
-    if (this.isLastConst && isNumber(tecla)) {
+    if (/pi|e$/.test(this.calcText) && isNumber(tecla)) {
       this.addTexts('*');
       this.setCursor(this.posicionCursor + 1);
     }

@@ -87,7 +87,6 @@ export class CalcComponent implements OnInit {
 
     this.resolveOperation();
     this.setCalcTextToService();
-    this.igual();
   }
 
 

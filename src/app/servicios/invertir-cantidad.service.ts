@@ -4,7 +4,6 @@ import { CalcService } from './calc.service';
 import { TextCenterService, ITexCenter } from './text-center.service';
 import { TexCursor } from '../calc-class';
 import { TextCursorService } from './text-cursor.service';
-import { EliminarSignoDerecha, EliminarSignoIzquieda } from './eliminarSigno';
 
 @Injectable({
   providedIn: 'root'

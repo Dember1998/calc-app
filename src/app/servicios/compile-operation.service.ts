@@ -36,7 +36,31 @@ export class CompileOperationService {
     this.operation = this.operation.replace('pi', pi.toString());
     this.operation = this.operation.replace('e', e.toString());
     this.operation = this.porcentaje(this.operation);
-    this.operation = this.formatear.addParentisis(this.operation);
+    this.operation = this.handleParentesis(this.operation);
+  }
+
+  /** convierte 1(2  a 1*(2) */
+  handleParentesis(op: string) {
+    op = this.formatear.addParentisis(op);
+    op = this.NumberAndParentesis(op);
+    op = this.ParentesisAndNumber(op);
+    op = this.ParentesisAndParentesis(op);
+    return op;
+  }
+
+  /** convierte 1(2) a 1*(2) */
+  NumberAndParentesis(op: string) {
+    return op.replace(/(\d)(?=\()/g, '$1*');
+  }
+
+  /** convierte 1*(2)3 a 1*(2)*3 */
+  ParentesisAndNumber(op: string) {
+    return op.replace(/\)(\d)/g, ')*$1');
+  }
+
+  /** convierte 1*(2)*(3) */
+  ParentesisAndParentesis(op: string) {
+    return op.replace(/\)\(/g, ')*(');
   }
 
 }

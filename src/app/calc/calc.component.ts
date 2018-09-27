@@ -63,7 +63,7 @@ export class CalcComponent implements OnInit {
   }
 
   private igual() {
-    this.calcText = this.formatoService.parentisis(this.calcText);
+    this.calcText = this.formatoService.addParentisis(this.calcText);
     this.resultado = this.resolverOperacion.resolverOperacion(this.calcText);
   }
 

@@ -36,7 +36,7 @@ export class CompileOperationService {
     this.operation = this.operation.replace('pi', pi.toString());
     this.operation = this.operation.replace('e', e.toString());
     this.operation = this.porcentaje(this.operation);
-    this.operation = this.formatear.parentisis(this.operation);
+    this.operation = this.formatear.addParentisis(this.operation);
   }
 
 }

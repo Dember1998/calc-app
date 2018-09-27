@@ -36,7 +36,7 @@ export class FormatearCadenasService {
     return newStrin;
   }
 
-  parentisis(txt: string): string {
+  addParentisis(txt: string): string {
 
     this.myString = txt;
 

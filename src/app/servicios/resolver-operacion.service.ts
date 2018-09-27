@@ -40,10 +40,6 @@ export class ResolverOperacionService {
     try {
       // tslint:disable-next-line:no-eval
       resultado = eval(operacion);
-
-      if (Number.isNaN(+resultado)) {
-        resultado = '';
-      }
     } catch (Error) {
       console.log('se detecto un error: ', Error);
       resultado = 'ERROR';

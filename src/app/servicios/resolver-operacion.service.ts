@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { FormatearCadenasService } from './formatear-cadenas.service';
 import { isSigno, strLast, deleteLast } from '../funciones';
 
+const COS = x => Math.cos(x);
+const SEN = x => Math.sin(x);
+const TAN = x => Math.tan(x);
+const SQRT = x => Math.sqrt(x);
+const pi = Math.PI;
+const e = Math.E;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,13 +29,6 @@ export class ResolverOperacionService {
   }
 
   resolverOperacion(operacion = ''): string {
-
-    const COS = x => Math.cos(x);
-    const SEN = x => Math.sin(x);
-    const TAN = x => Math.tan(x);
-    const SQRT = x => Math.sqrt(x);
-    const pi = Math.PI;
-    const e = Math.E;
 
     operacion = operacion.replace('√', 'SQRT');
     operacion = operacion.replace('pi', pi.toString());

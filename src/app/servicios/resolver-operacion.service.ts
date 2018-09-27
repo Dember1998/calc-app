@@ -1,48 +1,40 @@
 import { Injectable } from '@angular/core';
 import { FormatearCadenasService } from './formatear-cadenas.service';
 import { isSigno, strLast, deleteLast } from '../funciones';
+import { CompileOperationService } from './compile-operation.service';
 
 const COS = x => Math.cos(x);
 const SEN = x => Math.sin(x);
 const TAN = x => Math.tan(x);
 const SQRT = x => Math.sqrt(x);
-const pi = Math.PI;
-const e = Math.E;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResolverOperacionService {
 
-  constructor(public formatear: FormatearCadenasService) { }
+  constructor(
+    private compileOperation: CompileOperationService
+  ) { }
 
-  /**busca todas las apariciones de % y las reemplaza con /100 */
-  porcentaje(operacion: string) {
-    let newString = '';
-    for (const iterator of operacion) {
-      switch (iterator) {
-        case '%': newString += '/100'; break;
-        default: newString += iterator; break;
-      }
+  // verifica que la operacion sea valida
+  isValid(operacion: string) {
+    // se busca si el ultimo caracter no termina con
+    // un parentesis o con un signo
+    if (operacion.endsWith('(') || isSigno(strLast(operacion))) {
+      return false;
     }
-    return newString;
+    // console.log(`formateando operacion = ${operacion}`)
+    return true;
   }
 
   resolverOperacion(operacion = ''): string {
 
-    operacion = operacion.replace('√', 'SQRT');
-    operacion = operacion.replace('pi', pi.toString());
-    operacion = operacion.replace('e', e.toString());
-
-    // se busca si el ultimo caracter no termina con
-    // un parentesis o con un signo
-    if (operacion.endsWith('(') || isSigno(strLast(operacion))) {
-      operacion = deleteLast(operacion);
+    if (!this.isValid(operacion)) {
+      return '';
     }
 
-    operacion = this.formatear.parentisis(operacion);
-    // console.log(`formateando operacion = ${operacion}`);
-    operacion = this.porcentaje(operacion);
+    operacion = this.compileOperation.compile(operacion);
 
     let resultado: string;
     try {

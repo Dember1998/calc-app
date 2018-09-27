@@ -21,7 +21,7 @@ export class ResolverOperacionService {
   isValid(operacion: string) {
     // se busca si el ultimo caracter no termina con
     // un parentesis o con un signo
-    if (operacion.endsWith('(') || isSigno(strLast(operacion))) {
+    if (/[\(\+\-\*\/]$/.test(operacion)) {
       return false;
     }
     // console.log(`formateando operacion = ${operacion}`)
@@ -38,9 +38,8 @@ export class ResolverOperacionService {
 
     let resultado: string;
     try {
-      resultado = !isSigno(operacion[operacion.length - 1]) ?
-        // tslint:disable-next-line:no-eval
-        eval(operacion) : null;
+      // tslint:disable-next-line:no-eval
+      resultado = eval(operacion);
 
       if (Number.isNaN(+resultado)) {
         resultado = '';

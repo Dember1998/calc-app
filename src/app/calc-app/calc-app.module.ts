@@ -7,12 +7,13 @@ import { HistoryComponent } from '../history/history.component';
 import { CursorDirective } from '../cursor.directive';
 import { TextCalcDirective } from '../text-calc.directive';
 import { KeypadScientificComponent } from '../keypad-scientific/keypad-scientific.component';
+import { CalcSettingComponent } from '../calc-setting/calc-setting.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     CalcComponent,
@@ -21,9 +22,11 @@ import { KeypadScientificComponent } from '../keypad-scientific/keypad-scientifi
     TextCalcDirective,
     HistoryComponent,
     KeypadScientificComponent,
+    CalcSettingComponent
   ],
   exports: [
     CalcComponent,
+    CalcSettingComponent,
   ]
 })
 export class CalcAppModule { }

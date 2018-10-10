@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-  <app-calc></app-calc>
+  <app-nav></app-nav>
+  <router-outlet></router-outlet>
   `
 })
 export class AppComponent implements OnInit {

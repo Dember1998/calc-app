@@ -5,6 +5,8 @@ import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 import { isTrigonometria, isNumber, isSigno, isConstant, deleteLast } from '../funciones';
 import { CursorService } from './cursor.service';
+import { FilterSignService } from './filter-sign.service';
+import { CalcSettingService } from '../calc-setting/calc-setting.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class AddTextService {
   constructor(
     private cursorService: CursorService,
     private textCursorService: TextCursorService,
+    private filterSignService: FilterSignService,
+    private settingService: CalcSettingService
   ) {
     this.cursorService
       .getPosicionCursor$()
@@ -55,8 +59,11 @@ export class AddTextService {
     por ejemplo si se intenta escribir dos signos seguidos 1.. o 1++,
     en caso de se incorrecta se finalizara la funcion
     */
-    // tecla = this.filterSignService.processkey(tecla);
-    //  if (tecla === false) { return; }
+    let noRepeatConfig = this.settingService.getChanges().noRepeat;
+    if (noRepeatConfig) {
+      tecla = this.filterSignService.processkey(tecla);
+      if (tecla === false) { return; }
+    }
 
     if (/pi|e$/.test(this.calcText) && isNumber(tecla)) {
       this.addTexts('*');

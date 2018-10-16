@@ -23,7 +23,7 @@ export class FilterSignService {
 
     this.textCenterService
       .getTextCenter$()
-      .subscribe(text => this.cantidadActual = text.center);
+      .subscribe(text => this.cantidadActual = text);
 
     this.textCursorService
       .getTextCursor$()

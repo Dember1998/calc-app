@@ -1,21 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TexCursor } from '../calc-class';
-import { isSigno, strLast } from '../funciones';
 import { TextCursorService } from './text-cursor.service';
 // tslint:disable-next-line:import-blacklist
 import { Subject, Observable } from 'rxjs';
 
-/** cantidad bajo el cursor*/
-export interface ITexCenter {
-  /** cantidad bajo el cursor, con su signos  y su cursor */
-  centerCursor?: string;
-  /** cantidad bajo el cursor, con su signos */
-  center?: string;
-  /**la cadena a la izquierda de "center"*/
-  left?: string;
-  // **cadena a la derecha de "center" */
-  righ?: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -33,46 +21,36 @@ export class TextCenterService {
   }
 
   private textCursor: TexCursor;
-  private textCenterCursor$ = new Subject<ITexCenter>();
+  private textCenterCursor$ = new Subject<string>();
 
   private setTextCenterCursor() {
     this.textCenterCursor$.next(this.TextCenterCursor());
   }
 
-  getTextCenter$(): Observable<ITexCenter> {
+  getTextCenter$(): Observable<string> {
     return this.textCenterCursor$.asObservable();
   }
 
-  // 12+345+6889 = +345+
-  private TextCenterCursor(): ITexCenter {
-    const txtCalc = this.textCursor.start + '|' + this.textCursor.end;
+  textCenter(str = ''): string {
 
+    const txtCenter = /((?<=[+-])\|[+-]\d+)|([\/*+-]?(?:(\d*\|\d+)|(\d+\|\d*))[\/*+-]?)/;
 
-    function textCenter(str: string) {
-      // handel +|-23
-      if (/[\+\-\/\*]\|-/.test(str)) {
-        const menos = /[\+\-\/\*]\|[\+\-\/\*]([0-9]+)([\+\-\/\*]*)/;
-        // tslint:disable-next-line:no-shadowed-variable
-        const result = menos.exec(str);
-        return result ? result[0] : undefined;
-      }
-
-      const txtCenter = /([\+\-\/\*]?)(\d*)\|(\d*)([\+\-\/\*]?)/;
-      let result: any = txtCenter.exec(str);
-      result = result ? result[0] : undefined;
-
-      return result;
+    let result: any = txtCenter.exec(str);
+    if (!result) {
+      throw new Error(`Fallo la expresion regular con \"${str}\" en textCenter`);
     }
 
-    const centerCursor = textCenter(txtCalc);
-    const center = this.removeCursor(centerCursor);
-
-    return { center, left: '', righ: '' , centerCursor};
+    return this.removeCursor(result[0]);
   }
 
-  removeCursor(str: string) {
-    let res: any = Array.from(str).filter(char => char !== '|');
-    res = ''.concat(...res);
-    return res;
+  // 12+345+6889 = +345+
+  private TextCenterCursor(): string {
+    const txtCalc = this.textCursor.start + '|' + this.textCursor.end;
+    if (!txtCalc || txtCalc === '|') { return ''; }
+    return this.textCenter(txtCalc);
+  }
+
+  removeCursor(str = ''): string {
+    return str.replace('|', '');
   }
 }

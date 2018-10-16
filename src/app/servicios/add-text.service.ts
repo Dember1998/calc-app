@@ -28,6 +28,8 @@ export class AddTextService {
       .subscribe(text => {
         this.textCursor = text;
       });
+
+    this.emitText();
   }
 
   private calcText = '';
@@ -78,6 +80,10 @@ export class AddTextService {
     } else {
       this.addZero(tecla);
     }
+    this.emitText();
+  }
+
+  emitText() {
     this.calcText$.next(this.calcText);
   }
 

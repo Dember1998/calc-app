@@ -21,6 +21,8 @@ export class DeleteTextService {
 
   /**elimina  un caracter de la cadena principal*/
   public delete(str = ''): string {
+    if (!str || str === '|') { return ''; }
+
     this.calcText = str;
     this.buildText();
 

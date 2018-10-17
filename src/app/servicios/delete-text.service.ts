@@ -16,13 +16,21 @@ export class DeleteTextService {
     private textCursorService: TextCursorService,
   ) {
     this.textCursorService.getTextCursor$().subscribe(text => {
-      this.textCursor = text;
+      this.calcText = text.start + '|' + text.end;
     });
+  }
+
+  buildText() {
+    let split = this.calcText.split('|');
+    this.textCursor = { start: split[0], end: split[1] };
+
+    this.calcText = this.textCursor.start + this.textCursor.end;
   }
 
   /**elimina  un caracter de la cadena principal*/
   public delete(): string {
-    this.calcText = this.textCursor.start + this.textCursor.end;
+    this.buildText();
+
     const cosC = this.calcText.substr(this.calcText.length - 4);
 
     if (this.calcText.length === this.textCursor.start.length) {

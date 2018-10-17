@@ -11,6 +11,7 @@ export class DeleteTextService {
 
   textCursor: TexCursor;
   calcText = '';
+  pattern = /((COS|SEN|TAN)\($)|(.{1}$)/;
 
   constructor(
     private textCursorService: TextCursorService,
@@ -30,17 +31,12 @@ export class DeleteTextService {
   /**elimina  un caracter de la cadena principal*/
   public delete(): string {
     this.buildText();
-
     const cosC = this.calcText.substr(this.calcText.length - 4);
 
     if (this.calcText.length === this.textCursor.start.length) {
-      if (isTrigonometria(cosC, '(')) {
-        return deleteLast(this.calcText, 4);
-      }
-
-      return deleteLast(this.calcText);
+      return this.calcText.replace(this.pattern, '');
     }
 
-    return deleteLast(this.textCursor.start) + this.textCursor.end;
+    return this.textCursor.start.replace(this.pattern, '') + this.textCursor.end;
   }
 }

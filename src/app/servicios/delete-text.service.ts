@@ -10,27 +10,22 @@ import { TexCursor } from '../calc-class';
 export class DeleteTextService {
 
   textCursor: TexCursor;
-  posicionCursor: number;
   calcText = '';
 
   constructor(
-    private cursorService: CursorService,
     private textCursorService: TextCursorService,
   ) {
-    this.cursorService.getPosicionCursor$().subscribe(posicion => this.posicionCursor = posicion);
-
     this.textCursorService.getTextCursor$().subscribe(text => {
       this.textCursor = text;
-      this.calcText = text.start + text.end;
     });
   }
 
   /**elimina  un caracter de la cadena principal*/
   public delete(): string {
-    const lengthTxt = this.calcText.length;
-    const cosC = this.calcText.substr(lengthTxt - 4);
+    this.calcText = this.textCursor.start + this.textCursor.end;
+    const cosC = this.calcText.substr(this.calcText.length - 4);
 
-    if (lengthTxt === this.posicionCursor) {
+    if (this.calcText.length === this.textCursor.start.length) {
       if (isTrigonometria(cosC, '(')) {
         return deleteLast(this.calcText, 4);
       }

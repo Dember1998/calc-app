@@ -7,29 +7,31 @@ import { TexCursor } from '../calc-class';
 export class DeleteTextService {
 
   textCursor: TexCursor;
-  calcText = '';
   pattern = /((COS|SEN|TAN)\($)|(.{1}$)/;
 
   constructor() { }
 
-  buildText() {
-    let split = this.calcText.split('|');
+  buildText(calcText: string): string {
+    let split = calcText.split('|');
     this.textCursor = { start: split[0], end: split[1] };
 
-    this.calcText = this.textCursor.start + this.textCursor.end;
+    return this.textCursor.start + this.textCursor.end;
   }
 
   /**elimina  un caracter de la cadena principal*/
-  public delete(str = ''): string {
-    if (!str || str === '|') { return ''; }
+  public delete(calcText = ''): string {
+    if (!calcText || calcText === '|') { return ''; }
 
-    this.calcText = str;
-    this.buildText();
+    calcText = this.buildText(calcText);
 
-    if (this.calcText.length === this.textCursor.start.length) {
-      return this.calcText.replace(this.pattern, '');
+    if (calcText.length === this.textCursor.start.length) {
+      return this.remove();
     }
 
+    return this.remove();
+  }
+
+  remove() {
     return this.textCursor.start.replace(this.pattern, '') + this.textCursor.end;
   }
 }

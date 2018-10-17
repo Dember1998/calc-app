@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { isTrigonometria, deleteLast } from '../funciones';
-import { CursorService } from './cursor.service';
-import { TextCursorService } from './text-cursor.service';
 import { TexCursor } from '../calc-class';
 
 @Injectable({
@@ -13,13 +10,7 @@ export class DeleteTextService {
   calcText = '';
   pattern = /((COS|SEN|TAN)\($)|(.{1}$)/;
 
-  constructor(
-    private textCursorService: TextCursorService,
-  ) {
-    this.textCursorService.getTextCursor$().subscribe(text => {
-      this.calcText = text.start + '|' + text.end;
-    });
-  }
+  constructor() { }
 
   buildText() {
     let split = this.calcText.split('|');
@@ -29,9 +20,9 @@ export class DeleteTextService {
   }
 
   /**elimina  un caracter de la cadena principal*/
-  public delete(): string {
+  public delete(str = ''): string {
+    this.calcText = str;
     this.buildText();
-    const cosC = this.calcText.substr(this.calcText.length - 4);
 
     if (this.calcText.length === this.textCursor.start.length) {
       return this.calcText.replace(this.pattern, '');

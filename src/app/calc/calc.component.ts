@@ -24,6 +24,7 @@ export class CalcComponent implements OnInit {
   textCursor: TexCursor = { start: '', end: '' };
   /**la cantidad que esta bajo el cursor */
   cantidadActual = '';
+  calcTextWithCursor = '';
 
   listCalc: string[] = [
     'estandar',
@@ -53,9 +54,10 @@ export class CalcComponent implements OnInit {
       .getTextCenter$()
       .subscribe(text => this.cantidadActual = text);
 
-    this.textCursorService
-      .getTextCursor$()
-      .subscribe(text => this.textCursor = text);
+    this.textCursorService.getTextCursor$().subscribe(text => {
+      this.textCursor = text;
+      this.calcTextWithCursor = text.start + '|' + text.end;
+    });
 
     this.addTextService.getText$().subscribe(value => {
       this.calcText = value;
@@ -80,7 +82,7 @@ export class CalcComponent implements OnInit {
     } else if (tecla === '+/-') {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
-      this.calcText = this.deleteTextService.delete();
+      this.calcText = this.deleteTextService.delete(this.calcTextWithCursor);
     } else {
       this.addTextService.createText(tecla);
     }

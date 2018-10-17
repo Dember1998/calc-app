@@ -39,6 +39,6 @@ export function strLast(txt = ''): string {
 /**
  * elimina el ultimo elemento de una cadena y devuelve la cadena
  */
-export function deleteLast(txt = '') {
-  return txt.substr(0, txt.length - 1);
+export function deleteLast(txt = '', length = 1) {
+  return txt.substr(0, txt.length - length);
 }

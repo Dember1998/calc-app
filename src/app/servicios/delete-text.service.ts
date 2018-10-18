@@ -7,7 +7,7 @@ import { TexCursor } from '../calc-class';
 export class DeleteTextService {
 
   textCursor: TexCursor;
-  pattern = /((COS|SEN|TAN)\($)|(.{1}$)/;
+  pattern = /(([A-Z]+\(?)|.)$/;
 
   constructor() { }
 

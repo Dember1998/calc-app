@@ -64,8 +64,16 @@ export class AddTextService {
   }
 
   escapeToEval(txt: string): string {
-    txt = txt.replace(/(?<=\d)(pi|e)/gi, '*$1');
-    txt = txt.replace(/(?<=\d)(COS|SEN|TAN)(?!\()/gi, '*$1(');
+    txt = txt.replace(/(\d)(pi|e)/gi, '*$1');
+
+    txt = txt.replace(/(\d|^)(COS|SEN|TAN)(?!\()/gi, (...mathes) => {
+      if (mathes[1] === '') {
+        return mathes[2] + '(';
+      }
+
+      return mathes[1] + '*' + mathes[2] + '(';
+    });
+
     return this.addZero(txt);
   }
 

@@ -10,6 +10,8 @@ import { Subject, Observable } from 'rxjs';
 })
 export class TextCenterService {
 
+  txtCenter: RegExp;
+
   constructor(
     private textCursorService: TextCursorService
   ) {
@@ -18,10 +20,18 @@ export class TextCenterService {
       this.setTextCenterCursor();
     }
     );
+
+    const cursorBetween = '((?<=[+-])\\|[+-]\\d+)';
+    const num1 = '([0-9.]*\\|[0-9.]+)';
+    const num2 = '([0-9.]+\\|[0-9.]*[\\/*+-]?)';
+
+    const cursorAndNumber = '(' + num1 + '|' + num2 + ')';
+    this.txtCenter = new RegExp(cursorBetween + '|' + cursorAndNumber);
   }
 
   private textCursor: TexCursor;
   private textCenterCursor$ = new Subject<string>();
+
 
   private setTextCenterCursor() {
     this.textCenterCursor$.next(this.TextCenterCursor());
@@ -33,11 +43,9 @@ export class TextCenterService {
 
   textCenter(str = ''): string {
 
-    const txtCenter = /((?<=[+-])\|[+-]\d+)|([\/*+-]?(?:(\d*\|\d+)|(\d+\|\d*))[\/*+-]?)/;
-
-    let result: any = txtCenter.exec(str);
+    let result: any = this.txtCenter.exec(str);
     if (!result) {
-      throw new Error(`Fallo la expresion regular con \"${str}\" en textCenter`);
+      return '';
     }
 
     return this.removeCursor(result[0]);

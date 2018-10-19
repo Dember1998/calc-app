@@ -21,28 +21,24 @@ export class FilterSignService {
     private textCursorService: TextCursorService,
   ) {
 
-    this.textCenterService
-      .getTextCenter$()
-      .subscribe(text => this.cantidadActual = text);
+    this.textCenterService.getTextCenter$().subscribe(text => this.cantidadActual = text);
 
-    this.textCursorService
-      .getTextCursor$()
-      .subscribe(text => {
-        this.textCursor = text;
-        this.filtrarComa();
-        this.filtrarSigno();
-      });
+    this.textCursorService.getTextCursor$().subscribe(text => {
+      this.textCursor = text;
+      this.filtrarSigno();
+      this.filtrarComa();
+    });
   }
 
-  public processkey(key: string): string | boolean {
-
-    if (key === '.' && this.coma) {
-      return false;
-    } else if (key !== '+/-' && isSigno(key) && this.signo) {
-      return false;
-    }
+  public processkey(key: string): string {
+    if (this.coma && key === '.') { key = ''; }
+    if (this.signo && this.isEqualSign(key)) { key = ''; }
 
     return key;
+  }
+
+  isEqualSign(txt) {
+    return txt === '+' || txt === '-' || txt === '*' || txt === '/';
   }
 
   /** habilita o deshabilita la escritura de la coma*/

@@ -42,11 +42,10 @@ export class AddTextService {
   checkSyntax(tecla) {
     let noRepeatConfig = this.settingService.getChanges().noRepeat;
     if (noRepeatConfig) {
-      tecla = this.filterSignService.processkey(tecla);
-      if (tecla === false) { return false; }
+      return this.filterSignService.processkey(tecla);
     }
 
-    return true;
+    return tecla;
   }
 
   /**se reciben la mayoria de las teclas pulsadas y se crea
@@ -54,7 +53,8 @@ export class AddTextService {
    */
   public createText(tecla: any) {
 
-    if (!this.checkSyntax(tecla)) { return; }
+    tecla = this.checkSyntax(tecla);
+    if (tecla === '') { return; }
 
     this.addTexts(tecla);
     this.calcText = this.escapeToEval(this.calcText);

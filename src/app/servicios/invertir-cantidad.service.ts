@@ -8,10 +8,10 @@ export class InvertirCantidadService {
 
   textWithCursor: string;
 
-  cursorAnDigit = '((\\d*\\|\\d+)|(\\d+\\|\\d*))';
+  cursorAnDigit = '(([0-9.]*\\|[0-9.]+)|([0-9.]+\\|[0-9.]*))';
 
   reg = {
-    cursorBetweenSing: /(?<=[+-])\|[+-]\d+/,
+    cursorBetweenSing: /(?<=[+-])\|[+-]\d+\.?\d*/,
     oneSignRegex: new RegExp('(?<=[^+-]\\)?)[+-]' + this.cursorAnDigit),
     twoSignRegex: new RegExp('(?<=[^+-][+-])[+-]' + this.cursorAnDigit),
     numberOrSignStart: new RegExp('(^\\|[+-]\\d+)|(^(?:[+-]|^)' + this.cursorAnDigit + ')'),

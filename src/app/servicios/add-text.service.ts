@@ -66,7 +66,6 @@ export class AddTextService {
   escapeToEval(txt: string): string {
     txt = txt.replace(/(?<=\d)(pi|e)/gi, '*$1');
     txt = txt.replace(/(?<=\d)(COS|SEN|TAN)(?!\()/gi, '*$1(');
-    txt = txt.replace(/(?<=\d)(pi|e)/g, '*$1');
     return this.addZero(txt);
   }
 

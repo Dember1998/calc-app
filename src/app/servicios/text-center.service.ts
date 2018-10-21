@@ -21,9 +21,10 @@ export class TextCenterService {
     }
     );
 
+    let ss = '[\\/*+-]';
     const cursorBetween = '((?<=[+-])\\|[+-]\\d+)';
-    const num1 = '([0-9.]*\\|[0-9.]+)';
-    const num2 = '([0-9.]+\\|[0-9.]*[\\/*+-]?)';
+    const num1 = `(${ss}?[0-9.]*\\|[0-9.]+${ss})`;
+    const num2 = `(${ss}?[0-9.]+\\|[0-9.]*${ss}?)`;
 
     const cursorAndNumber = '(' + num1 + '|' + num2 + ')';
     this.txtCenter = new RegExp(cursorBetween + '|' + cursorAndNumber);

@@ -6,6 +6,7 @@ import { TexCursor } from '../calc-class';
 import { CursorService } from './cursor.service';
 import { FilterSignService } from './filter-sign.service';
 import { CalcSettingService } from '../calc-setting/calc-setting.service';
+import { EscapeStrService } from './escape-str.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AddTextService {
     private cursorService: CursorService,
     private textCursorService: TextCursorService,
     private filterSignService: FilterSignService,
-    private settingService: CalcSettingService
+    private settingService: CalcSettingService,
+    private escapeStrService: EscapeStrService
   ) {
     this.textCursorService.getTextCursor$().subscribe(text => {
       this.textCursor = text;
@@ -57,35 +59,11 @@ export class AddTextService {
     if (tecla === '') { return; }
 
     this.addTexts(tecla);
-    this.calcText = this.escapeToEval(this.calcText);
-
+    this.calcText = this.escapeStrService.escapeToEval(this.calcText);
     this.calculatePosCursor(tecla);
     this.emitText();
   }
 
-  escapeToEval(txt: string): string {
-    txt = txt.replace(/(?<=\d)(pi|e)/gi, '*$1');
-    txt = txt.replace(/(pi|e)(?=\d)/, '$1*');
-
-    txt = txt.replace(/(\d|^)(COS|SEN|TAN)(?!\()/gi, (...mathes) => {
-      if (mathes[1] === '') {
-        return mathes[2] + '(';
-      }
-
-      return mathes[1] + '*' + mathes[2] + '(';
-    });
-
-    return this.addZero(txt);
-  }
-
-  addZero(txt) {
-    if (!txt.endsWith('.')) {
-      let zeroRegExp = /(?:\d\.(?!\d))|(?:(?<!\d)\.\d)/g;
-      txt = txt.replace(zeroRegExp, x => x.endsWith('.') ? x + '0' : +x + '');
-    }
-
-    return txt;
-  }
 
   calculatePosCursor(tecla: string) {
     this.setCursor(this.posicionCursor + tecla.length);

@@ -23,6 +23,11 @@ export class EscapeStrService {
   }
 
   addZero(txt) {
+
+    if (txt === '.') {
+      return '0.';
+    }
+
     if (!txt.endsWith('.')) {
       let zeroRegExp = /(?:\d\.(?!\d))|(?:(?<!\d)\.\d)/g;
       txt = txt.replace(zeroRegExp, x => x.endsWith('.') ? x + '0' : +x + '');

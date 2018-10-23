@@ -23,6 +23,8 @@ export class ResolverOperacionService {
     // un parentesis o con un signo
     if (/[\(\+\-\*\/]$/.test(operacion)) {
       return false;
+    } else if (operacion.includes('\uE500')) {
+      return false;
     }
     // console.log(`formateando operacion = ${operacion}`)
     return true;

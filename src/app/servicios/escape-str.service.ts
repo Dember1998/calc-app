@@ -8,6 +8,8 @@ export class EscapeStrService {
   constructor() { }
 
   escapeToEval(txt: string): string {
+    txt = this.btn(txt);
+
     txt = txt.replace(/(?<=\d)(pi|e)/gi, '*$1');
     txt = txt.replace(/(pi|e)(?=\d)/, '$1*');
 
@@ -34,6 +36,19 @@ export class EscapeStrService {
     }
 
     return txt;
+  }
+
+  btn(str: string) {
+    if (str === '*' || str === '/') {
+      return '\uE500' + str;
+    }
+
+    str = str.replace(
+      /(?:(\d)\uE500)|(?:\uE500(\d))/,
+      (...mathes) => mathes[1] ? mathes[1] : mathes[2]
+    );
+
+    return str;
   }
 
 }

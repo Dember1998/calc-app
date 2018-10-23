@@ -7,6 +7,7 @@ import { CursorService } from './cursor.service';
 import { FilterSignService } from './filter-sign.service';
 import { CalcSettingService } from '../calc-setting/calc-setting.service';
 import { EscapeStrService } from './escape-str.service';
+import { CalcService } from './calc.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,15 @@ export class AddTextService {
     private textCursorService: TextCursorService,
     private filterSignService: FilterSignService,
     private settingService: CalcSettingService,
-    private escapeStrService: EscapeStrService
+    private escapeStrService: EscapeStrService,
+    private calcService: CalcService
   ) {
     this.textCursorService.getTextCursor$().subscribe(text => {
       this.textCursor = text;
       this.posicionCursor = text.start.length;
     });
+
+    this.calcService.getCalcText$().subscribe(text => { this.calcText = text; });
 
     this.emitText();
   }
@@ -71,10 +75,6 @@ export class AddTextService {
 
   emitText() {
     this.calcText$.next(this.calcText);
-  }
-
-  public setText(text: string) {
-    this.calcText = text;
   }
 
   public getText$() {

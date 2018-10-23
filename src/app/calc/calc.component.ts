@@ -71,7 +71,6 @@ export class CalcComponent implements OnInit {
 
   private invertirNumbero() {
     this.calcText = this.invertirService.invertir();
-    this.addTextService.setText(this.calcText);
   }
 
   getTecla(tecla: string) {

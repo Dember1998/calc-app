@@ -12,9 +12,9 @@ export class InvertirCantidadService {
 
   reg = {
     cursorBetweenSing: /(?<=[+-])\|[+-]\d+\.?\d*/,
-    oneSignRegex: new RegExp('(?<=[^+-]\\)?)[+-]' + this.cursorAnDigit),
+    oneSignRegex: new RegExp('(?<=[^()+-]\\)?)[+-]' + this.cursorAnDigit),
     twoSignRegex: new RegExp('(?<=[^+-][+-])[+-]' + this.cursorAnDigit),
-    numberOrSignStart: new RegExp('(^\\|[+-]\\d+)|(^(?:[+-]|^)' + this.cursorAnDigit + ')'),
+    numberOrSignStart: /^(\|[+-]?[\d.]+)|([+-]?[\d.]*\|[\d.]*)/,
   };
 
   constructor(
@@ -56,15 +56,15 @@ export class InvertirCantidadService {
       if (reg.oneSignRegex.test(str)) {
         return str.replace(reg.oneSignRegex, val => this.replace(val, 'add'));
       }
-      // handle 2|3 or -2|3
-      // tslint:disable-next-line:one-line
-      else if (reg.numberOrSignStart.test(str)) {
-        return str.replace(reg.numberOrSignStart, (val) => this.replace(val));
-      }
       // handle 12+|-56 to 12+|56
       // tslint:disable-next-line:one-line
       else if (reg.cursorBetweenSing.test(str)) {
         return str.replace(reg.cursorBetweenSing, (val) => this.replace(val));
+      }
+      // handle 2|3 or -2|3
+      // tslint:disable-next-line:one-line
+      else if (reg.numberOrSignStart.test(str)) {
+        return str.replace(reg.numberOrSignStart, (val) => this.replace(val));
       } else {
         throw new Error('la accion especificada no existe');
       }

@@ -25,6 +25,10 @@ export class EscapeStrService {
       });
     }
 
+    if (txt.includes('\u221A')) {
+      txt = txt.replace(/(\u221A)(?!\()/g, '$1(');
+    }
+
     return this.addZero(txt);
   }
 

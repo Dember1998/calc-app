@@ -35,6 +35,7 @@ export class CompileOperationService {
 
   handleOperation() {
     if (this.op.includes('\u221A')) {
+      this.op = this.op.replace(/(?<=\d)\u221A/g, '*\u221A');
       this.op = this.op.replace(/\u221A/g, 'SQRT');
     }
 

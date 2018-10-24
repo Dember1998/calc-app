@@ -58,7 +58,7 @@ export class AddTextService {
   /**se reciben la mayoria de las teclas pulsadas y se crea
    * una cadena a partir de esas pulsaciones
    */
-  public createText(tecla: any) {
+  public createText(tecla: string) {
 
     if (!isNumber(tecla)) {
       tecla = this.checkSyntax(tecla);
@@ -66,14 +66,15 @@ export class AddTextService {
     }
 
     this.addTexts(tecla);
+    let old = this.calcText;
     this.calcText = this.escapeStrService.escapeToEval(this.calcText);
-    this.calculatePosCursor(tecla);
+
+    if (old.length !== this.calcText.length) {
+      let n = (this.calcText.length - old.length) + tecla.length;
+      this.setCursor(this.posicionCursor + n);
+    }
+
     this.emitText();
-  }
-
-
-  calculatePosCursor(tecla: string) {
-    this.setCursor(this.posicionCursor + tecla.length);
   }
 
   emitText() {

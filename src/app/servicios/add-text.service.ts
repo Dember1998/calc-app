@@ -77,6 +77,10 @@ export class AddTextService {
     this.emitText();
   }
 
+  escapeBtn(str) {
+    return this.escapeStrService.btn(str);
+  }
+
   emitText() {
     this.calcText$.next(this.calcText);
   }

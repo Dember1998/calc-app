@@ -82,6 +82,7 @@ export class CalcComponent implements OnInit {
       this.invertirNumbero();
     } else if (tecla === 'AC') {
       this.calcText = this.deleteTextService.delete(this.calcTextWithCursor);
+      this.calcText = this.addTextService.escapeBtn(this.calcText);
     } else {
       this.addTextService.createText(tecla);
     }

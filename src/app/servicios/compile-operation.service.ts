@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormatearCadenasService } from './formatear-cadenas.service';
 
-const pi = Math.PI;
-const e = Math.E;
+const pi = Math.PI.toString();
+const e = Math.E.toString();
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,12 @@ export class CompileOperationService {
 
   constructor(public formatear: FormatearCadenasService, ) { }
 
-  operation = '';
+  op = '';
 
   /**busca todas las apariciones de % y las reemplaza con /100 */
   porcentaje(operacion: string) {
+    if (!operacion.includes('%')) { return operacion; }
+
     let newString = '';
     for (const iterator of operacion) {
       switch (iterator) {
@@ -26,25 +28,32 @@ export class CompileOperationService {
   }
 
   compile(operacion: string) {
-    this.operation = operacion;
+    this.op = operacion;
     this.handleOperation();
-    return this.operation;
+    return this.op;
   }
 
   handleOperation() {
-    this.operation = this.operation.replace(/\u221A/g, 'SQRT');
-    this.operation = this.operation.replace(/pi/g, pi.toString());
-    this.operation = this.operation.replace(/e/g, e.toString());
-    this.operation = this.porcentaje(this.operation);
-    this.operation = this.handleParentesis(this.operation);
+    if (this.op.includes('\u221A')) {
+      this.op = this.op.replace(/\u221A/g, 'SQRT');
+    }
+
+    if (this.op.includes('pi') || this.op.includes('e')) {
+      this.op = this.op.replace(/pi|e/g, (x) => x === 'e' ? e : pi);
+    }
+
+    this.op = this.porcentaje(this.op);
+    this.op = this.handleParentesis(this.op);
   }
 
   /** convierte 1(2  a 1*(2) */
   handleParentesis(op: string) {
-    op = this.formatear.addParentisis(op);
-    op = this.NumberAndParentesis(op);
-    op = this.ParentesisAndNumber(op);
-    op = this.ParentesisAndParentesis(op);
+    if (op.includes('(') || op.includes(')')) {
+      op = this.formatear.addParentisis(op);
+      op = this.NumberAndParentesis(op);
+      op = this.ParentesisAndNumber(op);
+      op = this.ParentesisAndParentesis(op);
+    }
     return op;
   }
 

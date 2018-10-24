@@ -15,6 +15,7 @@ export class FilterSignService {
   private coma: boolean;
   /**la cantidad que esta bajo el cursor */
   private cantidadActual: string;
+  keyPress: string;
 
   constructor(
     private textCenterService: TextCenterService,
@@ -25,12 +26,15 @@ export class FilterSignService {
 
     this.textCursorService.getTextCursor$().subscribe(text => {
       this.textCursor = text;
-      this.filtrarSigno();
-      this.filtrarComa();
     });
   }
 
   public processkey(key: string): string {
+    this.keyPress = key;
+
+    this.filtrarSigno();
+    this.filtrarComa();
+
     if (this.coma && key === '.') { key = ''; }
     if (this.signo && this.isEqualSign(key)) { key = ''; }
 
@@ -49,13 +53,18 @@ export class FilterSignService {
 
   /** habilita o deshabilita la escritura de los signos*/
   private filtrarSigno() {
-    const
-      star = this.textCursor.start,
-      end = this.textCursor.end;
+    const star = this.textCursor.start;
+    const last = star[star.length - 1];
 
-    this.signo = isSigno(star[star.length - 1]) ||
-      isSigno(end[0]) ?
-      true : false;
+    if (last === this.keyPress) {
+      this.signo = isSigno(last) || isSigno(this.textCursor.end[0]);
+      return;
+    } else {
+      if (this.keyPress === '+' || this.keyPress === '-') {
+        this.signo = false;
+        return;
+      }
+    }
 
     // console.log('signo = ' + this.signo);
   }

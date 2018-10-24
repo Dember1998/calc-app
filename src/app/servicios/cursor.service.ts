@@ -1,26 +1,27 @@
 import { Injectable } from '@angular/core';
-import {Subject} from 'rxjs/internal/Subject';
-import {Observable} from 'rxjs/internal/Observable';
+import { Subject } from 'rxjs/internal/Subject';
+import { Observable } from 'rxjs/internal/Observable';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursorService {
 
-    constructor() {
-    }
+  constructor() {
+  }
 
-    private posicionCursor$ = new Subject<number>();
+  private posicionCursor$ = new Subject<number>();
 
-    // obtienen y envian las posiciones del cursor
-    // provenientes de directivas
-    getPosicionCursor$(): Observable<number> {
-        return this.posicionCursor$.asObservable();
-    }
+  // obtienen y envian las posiciones del cursor
+  // provenientes de directivas
+  getPosicionCursor$(): Observable<number> {
+    return this.posicionCursor$.asObservable().pipe(distinctUntilChanged());
+  }
 
-    setPosicionCursor(posicionCursor: number) {
-        this.posicionCursor$.next(posicionCursor);
-        // console.log(`cursorService =${posicionCursor} de ${llamada}`);
+  setPosicionCursor(posicionCursor: number) {
+    this.posicionCursor$.next(posicionCursor);
+    // console.log(`cursorService =${posicionCursor} de ${llamada}`);
 
-    }
+  }
 }

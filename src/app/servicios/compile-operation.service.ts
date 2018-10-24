@@ -32,9 +32,9 @@ export class CompileOperationService {
   }
 
   handleOperation() {
-    this.operation = this.operation.replace('√', 'SQRT');
-    this.operation = this.operation.replace('pi', pi.toString());
-    this.operation = this.operation.replace('e', e.toString());
+    this.operation = this.operation.replace(/\u221A/g, 'SQRT');
+    this.operation = this.operation.replace(/pi/g, pi.toString());
+    this.operation = this.operation.replace(/e/g, e.toString());
     this.operation = this.porcentaje(this.operation);
     this.operation = this.handleParentesis(this.operation);
   }

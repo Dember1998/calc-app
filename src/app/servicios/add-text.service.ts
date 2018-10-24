@@ -8,6 +8,7 @@ import { FilterSignService } from './filter-sign.service';
 import { CalcSettingService } from '../calc-setting/calc-setting.service';
 import { EscapeStrService } from './escape-str.service';
 import { CalcService } from './calc.service';
+import { isNumber } from '../funciones';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AddTextService {
     private textCursorService: TextCursorService,
     private filterSignService: FilterSignService,
     private settingService: CalcSettingService,
-    private escapeStrService: EscapeStrService,
+    public escapeStrService: EscapeStrService,
     private calcService: CalcService
   ) {
     this.textCursorService.getTextCursor$().subscribe(text => {
@@ -59,8 +60,10 @@ export class AddTextService {
    */
   public createText(tecla: any) {
 
-    tecla = this.checkSyntax(tecla);
-    if (tecla === '') { return; }
+    if (!isNumber(tecla)) {
+      tecla = this.checkSyntax(tecla);
+      if (tecla === '') { return; }
+    }
 
     this.addTexts(tecla);
     this.calcText = this.escapeStrService.escapeToEval(this.calcText);

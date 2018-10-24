@@ -52,6 +52,10 @@ export class EscapeStrService {
       return '\uE500' + str;
     }
 
+    if (str.includes('+-')) {
+      str = str.replace('+-', '+\uE500-');
+    }
+
     if (str.includes('\uE500')) {
       str = str.replace(
         /(?:(\d)\uE500)|(?:\uE500(\d))/,

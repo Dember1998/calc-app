@@ -48,17 +48,19 @@ export class EscapeStrService {
   }
 
   btn(str: string) {
-    if (str === '*' || str === '/') {
-      return '\uE500' + str;
+    if (str.startsWith('*') || str.startsWith('/')) {
+      str = '\uE500' + str;
     }
 
     if (str.includes('+-')) {
-      str = str.replace('+-', '+\uE500-');
+      str = str.replace(/\+-(?!\d)/g, '+\uE500-');
+    } else if (str.includes('-+')) {
+      str = str.replace('-+', '-\uE500+');
     }
 
     if (str.includes('\uE500')) {
       str = str.replace(
-        /(?:(\d)\uE500)|(?:\uE500(\d))/,
+        /(?:(\d)\uE500)|(?:\uE500(\d))/g,
         (...mathes) => mathes[1] ? mathes[1] : mathes[2]
       );
     }

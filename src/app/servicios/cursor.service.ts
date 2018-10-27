@@ -16,7 +16,7 @@ export class CursorService {
   // obtienen y envian las posiciones del cursor
   // provenientes de directivas
   getPosicionCursor$(): Observable<number> {
-    return this.posicionCursor$.asObservable().pipe(distinctUntilChanged());
+    return this.posicionCursor$.asObservable();
   }
 
   setPosicionCursor(posicionCursor: number) {
